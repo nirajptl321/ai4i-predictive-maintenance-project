@@ -1,0 +1,13 @@
+,missing_count,missing_percent
+type,0,0.0
+air_temperature_k,0,0.0
+process_temperature_k,0,0.0
+rotational_speed_rpm,0,0.0
+torque_nm,0,0.0
+tool_wear_min,0,0.0
+machine_failure,0,0.0
+twf,0,0.0
+hdf,0,0.0
+pwf,0,0.0
+osf,0,0.0
+rnf,0,0.0

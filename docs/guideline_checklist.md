@@ -1,0 +1,26 @@
+# Guideline Checklist
+
+- [x] Project title is clear and matches the assignment topic.
+- [x] Dataset source is documented.
+- [x] Raw dataset path is `data/raw/ai4i2020.csv`.
+- [x] Task is supervised binary classification.
+- [x] Target is `machine_failure`.
+- [x] ID columns are dropped during preprocessing.
+- [x] Failure mode columns are excluded from model features.
+- [x] Failure mode columns are used only for EDA explanation.
+- [x] `type` is one-hot encoded.
+- [x] Data is split into 70% train, 15% validation, and 15% test.
+- [x] Split uses stratification and `random_state=42`.
+- [x] Validation set is used for model selection and hyperparameter tuning.
+- [x] Test set is used only for final evaluation.
+- [x] Five required models are trained.
+- [x] Required tuned models are tuned with small grids.
+- [x] Class imbalance handling is used where supported.
+- [x] Required metrics are reported.
+- [x] Required plots are generated.
+- [x] Demo script is included.
+- [x] README includes installation and run instructions.
+- [x] Report includes all required COEN 330 sections.
+- [x] Reproducibility run log is generated.
+- [ ] Team member names are finalized.
+
