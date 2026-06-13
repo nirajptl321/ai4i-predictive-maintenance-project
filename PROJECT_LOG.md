@@ -51,3 +51,15 @@
 - Added README, report drafts, notebooks, checklists, and reproducibility instructions.
 - Full run output is captured in `results/full_reproducibility_run.txt` after the final pipeline run.
 - Added `docs/comprehensive_project_review.md` to document guideline compliance evidence and final TODOs.
+
+## GitHub Collaboration Configuration
+
+- Verified local repository path, remote, current branch, and GitHub CLI authentication.
+- Remote repository: `nirajptl321/ai4i-predictive-maintenance-project`.
+- Current branch: `main`.
+- Changed repository visibility to public with `gh repo edit`.
+- Attempted to restrict direct pushes to `main` to only the owner username, `nirajptl321`.
+- GitHub API rejected user/team push restrictions for this personal repository with: `Only organization repositories can have users and team restrictions`.
+- Applied supported `main` branch protection instead: pull requests required, status checks not required, admin enforcement disabled, force pushes disabled, deletions disabled, linear history disabled, conversation resolution disabled.
+- Verified branch protection with `GET /repos/nirajptl321/ai4i-predictive-maintenance-project/branches/main/protection`.
+- Manual follow-up is needed only if the team wants an exact owner-only push allowlist; see `docs/github_repo_settings.md`.
