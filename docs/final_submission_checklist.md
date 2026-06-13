@@ -1,0 +1,25 @@
+# Final Submission Checklist
+
+- [x] Copy official COEN 330 guideline PDF to `docs/COEN330_Project_Guidelines.pdf`.
+- [x] Inspect `.gitignore` for GitHub readiness.
+- [x] Confirm `data/raw/ai4i2020.csv` is tracked or visible to git.
+- [x] Confirm `data/processed/ai4i_processed.csv` is visible to git.
+- [x] Confirm `models/final_model.joblib` is visible to git.
+- [x] Confirm `data/raw/ai4i2020.csv` is present.
+- [x] Run `python -m src.preprocessing`.
+- [x] Run `python -m src.eda`.
+- [x] Run `python -m src.train`.
+- [x] Run `python -m src.evaluate`.
+- [x] Run `python demo/demo.py`.
+- [x] Confirm `models/final_model.joblib` exists.
+- [x] Confirm `results/metrics_table.csv` exists.
+- [x] Confirm `results/test_metrics.csv` exists.
+- [x] Confirm required plots exist in `results/plots/`.
+- [x] Confirm `results/full_reproducibility_run.txt` exists.
+- [x] Confirm `results/demo_output.txt` exists.
+- [x] Run `git diff --check`.
+- [x] Create `docs/comprehensive_project_review.md`.
+- [ ] Replace `TODO_NAME` placeholders in the team contribution section.
+- [ ] Export `report/final_report.md` to PDF if required for Moodle submission.
+- [ ] Review final report for course-specific formatting requirements.
+- [ ] Confirm external tools and AI-assistance disclosure follows the course policy.
