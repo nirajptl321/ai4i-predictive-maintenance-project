@@ -35,6 +35,10 @@ Do not use Git LFS for this project unless a future file becomes large. Download
 
 This GitHub repository is public. Do not push directly to `main` for normal project work. Create a branch for changes, push that branch, and open a pull request. The repository owner reviews and merges final changes into `main`.
 
+## Repository Structure
+
+See `docs/REPOSITORY_STRUCTURE.md` for a teammate-friendly explanation of the project folders and files.
+
 ## Input Features
 
 Only these model input features are used:
