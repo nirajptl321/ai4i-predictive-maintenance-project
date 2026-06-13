@@ -31,6 +31,10 @@ The AI4I CSV files and final model are small enough to commit directly to GitHub
 
 Do not use Git LFS for this project unless a future file becomes large. Downloaded ZIP files such as `data/raw/*.zip` remain ignored.
 
+## Team Collaboration
+
+This GitHub repository is public. Do not push directly to `main` for normal project work. Create a branch for changes, push that branch, and open a pull request. The repository owner reviews and merges final changes into `main`.
+
 ## Input Features
 
 Only these model input features are used:
