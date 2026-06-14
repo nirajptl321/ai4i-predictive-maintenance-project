@@ -23,8 +23,17 @@
 - [x] Complete course-content audit against the official guideline and lecture/tutorial materials.
 - [x] Create `docs/COURSE_CONTENT_AUDIT.md`.
 - [x] Create `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`.
-- [ ] Regenerate `report/final_report.pdf` after any final report Markdown edits.
+- [x] Add dataset license and citation notes for the AI4I dataset.
+- [x] Regenerate `report/final_report.pdf` after the latest final report Markdown edit.
+- [x] Verify `report/final_report.pdf` exists and `pdfinfo report/final_report.pdf` works.
 - [ ] Visually inspect `report/final_report.pdf` before submission.
 - [ ] Create final Moodle ZIP.
 - [ ] Review final report for course-specific formatting requirements.
 - [ ] Confirm external tools and AI-assistance disclosure follows the course policy.
+
+PDF regeneration method used when `report/final_report.md` changes:
+
+```bash
+# Create a temporary HTML version of report/final_report.md, then convert it with LibreOffice headless.
+libreoffice --headless --convert-to pdf --outdir report /tmp/ai4i_final_report.html
+```

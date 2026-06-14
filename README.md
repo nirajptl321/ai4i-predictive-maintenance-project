@@ -18,6 +18,8 @@ This was prepared as a COEN 330 course project. The repository is organized so t
 
 The dataset is synthetic and small enough to keep in the repository. It has 10,000 rows and a ready-made binary target. I chose AI4I because it fits the course topic well: it is about machine condition data, has a clear failure label, and is small enough for teammates or the instructor to rerun quickly.
 
+Dataset attribution: the AI4I 2020 Predictive Maintenance Dataset is distributed through the UCI Machine Learning Repository under CC BY 4.0. The dataset is credited to Stephan Matzka and is associated with the paper "Explainable Artificial Intelligence for Predictive Maintenance Applications" (2020).
+
 Target:
 
 - `machine_failure = 0`: no machine failure
@@ -107,6 +109,8 @@ The model caught 34 failure cases and missed 17 failure cases in the test set. I
 Full validation results are in `results/metrics_table.csv`. Final test results are in `results/test_metrics.csv`.
 
 ## How To Run
+
+Recommended Python version: Python 3.11 or newer.
 
 Create and activate a virtual environment:
 

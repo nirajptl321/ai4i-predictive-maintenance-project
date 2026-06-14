@@ -53,7 +53,7 @@ def save_feature_importance_plot(model, X_test: pd.DataFrame, y_test: pd.Series)
         scoring="f1",
         n_repeats=10,
         random_state=RANDOM_STATE,
-        n_jobs=-1,
+        n_jobs=1,
     )
     importance_df = pd.DataFrame(
         {

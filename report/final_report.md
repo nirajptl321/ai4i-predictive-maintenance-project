@@ -16,7 +16,7 @@ Predictive maintenance is commonly framed as a classification, regression, anoma
 
 ## 4. Dataset Description
 
-The dataset is the AI4I 2020 Predictive Maintenance Dataset from the UCI Machine Learning Repository. The local raw file is `data/raw/ai4i2020.csv`. It contains 10,000 synthetic observations. The input data includes one categorical feature, `type`, and numeric operating measurements for temperature, rotational speed, torque, and tool wear.
+The dataset is the AI4I 2020 Predictive Maintenance Dataset from the UCI Machine Learning Repository. The local raw file is `data/raw/ai4i2020.csv`. It contains 10,000 synthetic observations. The dataset is distributed through UCI under CC BY 4.0 and is credited to Stephan Matzka. The input data includes one categorical feature, `type`, and numeric operating measurements for temperature, rotational speed, torque, and tool wear.
 
 Target:
 
@@ -170,8 +170,9 @@ Overall, this project shows a clear binary classification workflow for machine f
 
 ## 15. References
 
-1. UCI Machine Learning Repository. AI4I 2020 Predictive Maintenance Dataset. https://archive.ics.uci.edu/dataset/601/ai4i+2020+predictive+maintenance+dataset
-2. scikit-learn developers. scikit-learn: Machine Learning in Python. https://scikit-learn.org/
-3. pandas development team. pandas documentation. https://pandas.pydata.org/
+1. Stephan Matzka. AI4I 2020 Predictive Maintenance Dataset. UCI Machine Learning Repository. CC BY 4.0. https://archive.ics.uci.edu/dataset/601/ai4i+2020+predictive+maintenance+dataset
+2. Stephan Matzka. "Explainable Artificial Intelligence for Predictive Maintenance Applications." 2020.
+3. scikit-learn developers. scikit-learn: Machine Learning in Python. https://scikit-learn.org/
+4. pandas development team. pandas documentation. https://pandas.pydata.org/
 
 Academic integrity and external tools acknowledgment: this project uses standard Python libraries including pandas, scikit-learn, matplotlib, seaborn, joblib, and nbformat. The team reviewed and verified the final repository contents; the team remains responsible for understanding, verifying, and disclosing this use according to the course policy.
