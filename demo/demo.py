@@ -26,32 +26,34 @@ def main() -> None:
     target_column = package["target_column"]
 
     df = pd.read_csv(PROCESSED_DATA_PATH)
-    positive_examples = df[df[target_column] == 1].head(1)
-    negative_examples = df[df[target_column] == 0].head(1)
+    positive_examples = df[df[target_column] == 1].head(3)
+    negative_examples = df[df[target_column] == 0].head(3)
     demo_rows = pd.concat([negative_examples, positive_examples], axis=0)
 
     probabilities = model.predict_proba(demo_rows[feature_columns])[:, 1]
     predictions = model.predict(demo_rows[feature_columns])
 
     print("AI4I Machine Failure Prediction Demo")
+    print("This demo shows a few sample predictions only. Full evaluation is done by python -m src.evaluate.")
     print("This is a simple local demo, not deployment software.")
     print(f"Loaded model: {package['model_name']}")
     print()
 
     for display_index, (row_index, row) in enumerate(demo_rows.iterrows(), start=1):
-        print(f"Sample {display_index} from processed row index {row_index}")
+        print(f"Sample {display_index}")
+        print(f"  Original processed row index: {row_index}")
+        print(f"  True class: {int(row[target_column])}")
+        print(f"  Predicted class: {int(predictions[display_index - 1])}")
+        print(f"  Predicted probability of machine failure: {probabilities[display_index - 1]:.4f}")
+        print("  Input feature values:")
         print(f"  Type: {row['type']}")
         print(f"  Air temperature [K]: {row['air_temperature_k']}")
         print(f"  Process temperature [K]: {row['process_temperature_k']}")
         print(f"  Rotational speed [rpm]: {row['rotational_speed_rpm']}")
         print(f"  Torque [Nm]: {row['torque_nm']}")
         print(f"  Tool wear [min]: {row['tool_wear_min']}")
-        print(f"  True class: {int(row[target_column])}")
-        print(f"  Predicted class: {int(predictions[display_index - 1])}")
-        print(f"  Predicted probability of machine failure: {probabilities[display_index - 1]:.4f}")
         print()
 
 
 if __name__ == "__main__":
     main()
-

@@ -8,7 +8,7 @@ This project builds a supervised binary classifier for machine failure predictio
 
 Predictive maintenance uses machine data to estimate whether equipment is likely to fail. In real settings, a missed failure can cause downtime, repair costs, safety issues, and production delays. This makes recall and F2-score important secondary metrics, while F1-score remains the main balanced metric for model selection.
 
-The goal of this project is to keep the workflow simple and reproducible: load a known dataset, prevent leakage, compare standard classifiers, save a final model, and provide a local demo.
+The AI4I dataset was chosen because it is directly related to machine condition monitoring, has a clear binary failure label, and is small enough for a course project where the full workflow should be easy to rerun. The goal of this project is to keep the workflow simple and reproducible: load a known dataset, prevent leakage, compare standard classifiers, save a final model, and provide a local demo.
 
 ## 3. Related Work or Background
 
@@ -140,11 +140,13 @@ Test confusion matrix counts:
 
 The selected model had high precision and strong ROC-AUC, but recall was lower than precision. This means the model was conservative when predicting failures: false alarms were rare, but some true failures were missed. In a maintenance setting, false negatives can be expensive, so future work should examine probability threshold tuning or cost-sensitive learning.
 
+On the held-out test set, the model caught 34 failure cases and missed 17 failure cases. It also produced 5 false alarms. Accuracy is high, but these missed failures are important because recall matters when the positive class represents a costly machine failure.
+
 The Logistic Regression baseline had much higher recall than its F1-score suggests, but it produced many more false positives. This tradeoff is useful for discussion because different maintenance settings may prefer higher recall even at the cost of more inspections.
 
 ## 11. Demo or Usage Demonstration Description
 
-The demo script `demo/demo.py` loads `models/final_model.joblib` and sample rows from `data/processed/ai4i_processed.csv`. It prints each sample's true class, predicted class, and predicted probability of machine failure. The demo is local and simple; it is not deployment software.
+The demo script `demo/demo.py` loads `models/final_model.joblib` and sample rows from `data/processed/ai4i_processed.csv`. It prints each sample's true class, predicted class, and predicted probability of machine failure. The demo is local and simple; it is not deployment software or a production maintenance system.
 
 ## 12. Limitations and Future Work
 
@@ -156,11 +158,11 @@ The demo script `demo/demo.py` loads `models/final_model.joblib` and sample rows
 
 ## 13. Conclusion
 
-This project provides a complete, reproducible binary classification workflow for machine failure prediction. It avoids leakage by excluding failure mode columns from model features, uses validation-based model selection, saves a final model, and evaluates once on the held-out test set. HistGradientBoostingClassifier achieved the best validation F1-score and produced a test F1-score of 0.7556.
+Overall, this project shows a clear binary classification workflow for machine failure prediction. It avoids leakage by excluding failure mode columns from model features, uses validation-based model selection, saves a final model, and evaluates once on the held-out test set. HistGradientBoostingClassifier achieved the best validation F1-score and produced a test F1-score of 0.7556.
 
 ## 14. Team Contributions
 
-- Niraj Patel — coordinated the repository, integrated the main project workflow, organized the dataset pipeline, implemented the preprocessing/training/evaluation scripts, prepared the demo, and assembled the final documentation and reproducibility checks.
+- Niraj Patel — coordinated the repository, integrated the main workflow, organized the dataset pipeline, implemented the preprocessing/training/evaluation scripts, prepared the demo, and assembled the documentation and reproducibility checks.
 - Member 2: TODO_NAME — supported dataset review and helped check the feature/target definitions.
 - Member 3: TODO_NAME — supported EDA review and helped check plots and class balance observations.
 - Member 4: TODO_NAME — supported model result review and helped check validation/test metric interpretation.

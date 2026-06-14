@@ -1,135 +1,77 @@
 # Comprehensive Project Review
 
-## Guideline PDF Status
+This review checks the AI4I predictive maintenance project against the official COEN 330 project guideline PDF and the current repository files.
 
-Copied successfully: yes.
+## Guideline Source Used
 
-Guideline destination:
-
-- `docs/COEN330_Project_Guidelines.pdf`
-
-Guideline source used:
-
-- `/home/niraj/Downloads/COEN330_Project_Guidelines_Extended_Complete_Summer2026.pdf`
-
-PDF details observed with `pdfinfo`:
-
-- Title/content: COEN 330 Applied Machine Learning course project guidelines, Summer 2026
-- Pages: 6
-- File size: 404,687 bytes
-
-## GitHub Readiness Check
-
-`.gitignore` was inspected. It keeps the required AI4I project artifacts commit-visible and continues to ignore development noise.
-
-Commit-visible or already tracked:
-
-- `data/raw/ai4i2020.csv` - already tracked by git
-- `data/processed/ai4i_processed.csv` - visible as untracked
-- `models/final_model.joblib` - visible as untracked
-
-Ignored as intended:
-
-- `.venv/`
-- `__pycache__/`
-- `*.pyc`
-- `.ipynb_checkpoints/`
-- `*.tmp`
-- `*.log`
-- `.DS_Store`
-- `Thumbs.db`
-- `data/raw/*.zip`
-
-Git LFS status: not used and not needed for the small AI4I CSV/model artifacts.
-
-## Guideline Items Checked
-
-The compliance check used:
+The official guideline PDF exists and was used for this review:
 
 - `docs/COEN330_Project_Guidelines.pdf`
-- `docs/guideline_checklist.md`
-- `docs/final_submission_checklist.md`
-- `report/final_report_draft.md`
-- `report/final_report.md`
-- `README.md`
-- `PROJECT_LOG.md`
-- `results/`
-- `src/`
-- `demo/`
-- `notebooks/`
 
-## Passed
+The PDF is the COEN 330 Applied Machine Learning Summer 2026 project guideline. It asks for a clear machine learning problem, dataset documentation, preprocessing, EDA, feature engineering or feature selection, model development, validation, evaluation, interpretation, reproducibility, a demo, a final report, and a team contribution section.
 
-- Clear problem definition: supervised binary machine failure classification.
-- Dataset source and description: AI4I 2020 Predictive Maintenance Dataset from UCI.
-- Target definition: `machine_failure`, with 0 as no failure and 1 as failure.
-- Preprocessing: raw CSV loading, column-name cleaning, ID removal, processed CSV output.
-- EDA: class balance, missing values, feature distributions, correlation heatmap, target-vs-feature plots, failure mode counts.
-- Feature engineering and representation: feature selection, one-hot encoding for `type`, numeric standardization in the modeling pipeline.
-- At least five models: exactly five models are implemented and compared.
-- Simple baseline model: Logistic Regression baseline.
-- Hyperparameter tuning for at least three models: Decision Tree, Random Forest, and HistGradientBoostingClassifier.
-- Validation/test separation: stratified 70/15/15 split with validation for selection and test for final evaluation.
-- Target leakage control: `TWF`, `HDF`, `PWF`, `OSF`, and `RNF` are excluded from model features.
-- Appropriate metrics: accuracy, precision, recall, F1-score, F2-score, ROC-AUC, and confusion matrix.
-- Model comparison table: `results/metrics_table.csv` and report section 9.
-- Error analysis: false positives/false negatives and recall tradeoff discussed.
-- Limitations: synthetic dataset, class imbalance, threshold tuning, and deployment limitations documented.
-- Reproducibility instructions: README and `results/full_reproducibility_run.txt`.
-- Demo: `demo/demo.py` loads the saved model and predicts on sample processed rows.
-- Notebooks: five explanatory notebooks are present under `notebooks/`.
-- Final report structure: all 15 required report sections are present.
-- Team contribution section: present. Niraj Patel is listed for main integration and technical workflow; remaining teammates still use `TODO_NAME` placeholders.
-- References: UCI dataset, scikit-learn, and pandas references are included.
-- Academic integrity / AI-tool acknowledgment: README and report now include external tools and AI-assistance disclosure text.
+## Guideline Compliance Table
 
-## Five Models Verified
+| Requirement | Status | Evidence files | Notes / fixes needed |
+|---|---|---|---|
+| Problem definition | Complete | `README.md`, `report/final_report.md` | The project is clearly framed as supervised binary classification for machine failure prediction. |
+| Motivation and application context | Complete | `README.md`, `report/final_report.md` | The docs explain why missed machine failures matter. |
+| Dataset source | Complete | `README.md`, `data/data_link.txt`, `report/final_report.md` | Dataset is AI4I 2020 Predictive Maintenance Dataset from UCI. |
+| Dataset description | Complete | `README.md`, `report/final_report.md`, `data/processed/ai4i_processed.csv` | Documents 10,000 synthetic observations, target, feature types, and approved inputs. |
+| Target definition | Complete | `README.md`, `report/final_report.md`, `src/config.py` | `machine_failure`; 0 means no failure and 1 means failure. |
+| Preprocessing | Complete | `src/preprocessing.py`, `README.md`, `report/final_report.md` | Cleans column names, drops ID columns, and writes `data/processed/ai4i_processed.csv`. |
+| EDA | Complete | `src/eda.py`, `results/plots/`, `results/missing_values_summary.csv`, `report/final_report.md` | Includes class balance, missing values, feature distributions, correlation heatmap, target-vs-feature plots, and failure mode counts. |
+| Feature engineering / representation | Complete | `src/modeling.py`, `README.md`, `report/final_report.md` | Uses one-hot encoding for `type`, numeric standardization, and feature selection. |
+| Leakage prevention | Complete | `src/config.py`, `src/utils.py`, `README.md`, `report/final_report.md` | `TWF`, `HDF`, `PWF`, `OSF`, and `RNF` are excluded from model features and used only for EDA/explanation. |
+| Train/validation/test split | Complete | `src/utils.py`, `README.md`, `report/final_report.md` | Stratified 70/15/15 split with `random_state=42`. |
+| Five models | Complete | `src/modeling.py`, `results/metrics_table.csv`, `README.md` | Logistic Regression, Decision Tree, Random Forest, Extra Trees, HistGradientBoostingClassifier. |
+| Baseline model | Complete | `src/modeling.py`, `README.md`, `report/final_report.md` | Logistic Regression is the simple baseline. |
+| Hyperparameter tuning for at least three models | Complete | `src/modeling.py`, `README.md`, `results/metrics_table.csv` | Decision Tree, Random Forest, and HistGradientBoostingClassifier are tuned. |
+| Validation / model selection | Complete | `src/train.py`, `src/modeling.py`, `results/metrics_table.csv` | Final model is selected by validation F1-score. |
+| Final test evaluation | Complete | `src/evaluate.py`, `results/test_metrics.csv`, `report/final_report.md` | Test set is used for final evaluation after model selection. |
+| Appropriate metrics | Complete | `src/utils.py`, `results/test_metrics.csv`, `README.md` | Accuracy, precision, recall, F1-score, F2-score, ROC-AUC, and confusion matrix are reported. |
+| Model comparison | Complete | `results/metrics_table.csv`, `results/plots/model_comparison.png`, `report/final_report.md` | Validation comparison table and plot are available. |
+| Error analysis | Complete | `report/final_report.md`, `README.md` | Explains false positives, false negatives, missed failures, and recall tradeoff. |
+| Limitations | Complete | `README.md`, `report/final_report.md` | Notes synthetic data, rare failure class, no threshold tuning, and no production deployment. |
+| Reproducibility | Complete | `README.md`, `requirements.txt`, `results/full_reproducibility_run.txt`, `src/` | Commands and dependency file are provided. |
+| Demo | Complete | `demo/demo.py`, `demo/README.md`, `results/demo_output.txt` | Local command-line demo loads the trained model and predicts on sample rows. |
+| Notebooks or scripts | Complete | `notebooks/`, `src/` | Notebooks are walkthroughs; `src/` is the authoritative pipeline. |
+| Saved model / results / figures | Complete | `models/final_model.joblib`, `results/`, `results/plots/` | Final model, metrics, logs, and plots are present. |
+| Final report structure | Complete | `report/final_report.md`, `report/final_report_draft.md` | All 15 required sections are present. |
+| Team contribution section | Partial | `report/final_report.md`, `report/final_report_draft.md` | Contribution wording is present and honest, but `TODO_NAME` placeholders remain for Members 2-5. |
+| References | Complete | `report/final_report.md`, `report/final_report_draft.md` | Includes UCI, scikit-learn, and pandas references. |
+| Academic integrity / external tools acknowledgment | Complete | `README.md`, `report/final_report.md` | External libraries and tool-supported support are acknowledged. |
+| Final submission checklist | Complete | `docs/final_submission_checklist.md` | Checklist exists and includes remaining manual tasks. |
+| Final report PDF | Partial | `report/final_report.pdf`, `docs/final_submission_checklist.md` | PDF exists, but it should be regenerated after any final report Markdown edit and visually inspected before submission. |
+| Moodle ZIP packaging | Partial | `docs/final_submission_checklist.md` | Final ZIP must still be created manually before Moodle submission. |
 
-Documented and implemented:
+## Report Structure Check
 
-- Logistic Regression baseline
-- Decision Tree
-- Random Forest
-- Extra Trees
-- HistGradientBoostingClassifier
+Both `report/final_report.md` and `report/final_report_draft.md` include the required sections:
 
-Evidence:
+1. Abstract
+2. Introduction and motivation
+3. Related work or background
+4. Dataset description
+5. Preprocessing and exploratory data analysis
+6. Methodology and models
+7. Validation and hyperparameter tuning strategy
+8. Experimental setup
+9. Results and model comparison
+10. Error analysis and qualitative discussion
+11. Demo or usage demonstration description
+12. Limitations and future work
+13. Conclusion
+14. Team contribution section
+15. References
 
-- `src/modeling.py`
-- `README.md`
-- `report/final_report.md`
-- `report/final_report_draft.md`
-- `results/metrics_table.csv`
-
-## Hyperparameter Tuning Verified
-
-Tuned models:
-
-- Decision Tree
-- Random Forest
-- HistGradientBoostingClassifier
-
-Documented tuning fields:
-
-- Decision Tree: `criterion`, `max_depth`, `min_samples_leaf`
-- Random Forest: `n_estimators`, `max_depth`, `min_samples_leaf`
-- HistGradientBoostingClassifier: `learning_rate`, `max_iter`, `max_leaf_nodes`
-
-Evidence:
-
-- `src/modeling.py`
-- `README.md`
-- `report/final_report.md`
-- `report/final_report_draft.md`
-- `results/metrics_table.csv`
-
-## Final Model and Test Metrics Verified
+## Final Model and Test Metrics
 
 Selected model:
 
 - HistGradientBoostingClassifier
 
-Held-out test metrics:
+Final test metrics:
 
 - Accuracy: 0.9853
 - Precision: 0.8718
@@ -139,55 +81,20 @@ Held-out test metrics:
 - ROC-AUC: 0.9750
 - Confusion matrix: TN=1444, FP=5, FN=17, TP=34
 
-Evidence:
+Plain-language interpretation: the model caught 34 failure cases and missed 17 failure cases in the test set. It also produced 5 false alarms. Accuracy is high, but recall is important because missed failures are costly.
 
-- `results/test_metrics.csv`
-- `results/full_reproducibility_run.txt`
-- `README.md`
-- `report/final_report.md`
-- `report/final_report_draft.md`
-- `models/final_model.joblib`
+## Final Project Verdict
 
-## Partial Items
+Verdict: almost ready.
 
-- Some team contribution names are placeholders (`TODO_NAME`) until the team fills in real names and confirms final descriptions.
-- The guideline asks for final report submission as a PDF for Moodle. The repository currently includes Markdown report files: `report/final_report.md` and `report/final_report_draft.md`. Export to PDF remains a final packaging step if Moodle requires it.
-- The guideline recommends screenshots or a short video for the demo. The project includes a working command-line demo and captured `results/demo_output.txt`, but no screenshot or video.
+The project satisfies the main COEN 330 technical and documentation requirements. The remaining items are manual submission tasks rather than missing machine learning work.
 
-## Missing Required Items
+## Remaining TODOs
 
-No required repository component was found missing during this review.
-
-## Evidence File Paths
-
-- Official guideline PDF: `docs/COEN330_Project_Guidelines.pdf`
-- README: `README.md`
-- Project log: `PROJECT_LOG.md`
-- Guideline checklist: `docs/guideline_checklist.md`
-- Final submission checklist: `docs/final_submission_checklist.md`
-- Final report draft: `report/final_report_draft.md`
-- Final report: `report/final_report.md`
-- Report notes: `report/REPORT_NOTES.md`
-- Preprocessing source: `src/preprocessing.py`
-- EDA source: `src/eda.py`
-- Modeling source: `src/modeling.py`
-- Training source: `src/train.py`
-- Evaluation source: `src/evaluate.py`
-- Demo source: `demo/demo.py`
-- Processed dataset: `data/processed/ai4i_processed.csv`
-- Final model: `models/final_model.joblib`
-- Validation metrics: `results/metrics_table.csv`
-- Test metrics: `results/test_metrics.csv`
-- Reproducibility log: `results/full_reproducibility_run.txt`
-- Demo output: `results/demo_output.txt`
-- Plots: `results/plots/`
-- Notebooks: `notebooks/`
-
-## Final Remaining TODOs
-
-- Replace remaining `TODO_NAME` placeholders with real team member names.
-- Confirm final contribution descriptions before submission.
-- Export `report/final_report.md` to PDF if required for Moodle submission.
-- Confirm the final external tools and AI-assistance disclosure wording matches the instructor's policy.
-- Optionally add a demo screenshot or short video if the team wants to follow the recommendation in the guideline PDF.
-- Commit the repository intentionally after reviewing all untracked files.
+- Replace remaining `TODO_NAME` placeholders with real team member names before final submission.
+- Confirm final contribution descriptions with the team.
+- Regenerate `report/final_report.pdf` if `report/final_report.md` changes again.
+- Visually inspect `report/final_report.pdf` before submission.
+- Create the final Moodle ZIP.
+- Confirm the external tools and AI-assistance disclosure wording matches the instructor's policy.
+- Optionally add a demo screenshot or short video if the team wants to follow the guideline recommendation.

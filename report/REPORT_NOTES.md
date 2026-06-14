@@ -16,4 +16,4 @@
 - Five compared models: Logistic Regression baseline, Decision Tree, Random Forest, Extra Trees, HistGradientBoostingClassifier.
 - Contribution wording now names Niraj Patel for main integration and technical workflow while keeping remaining member names as `TODO_NAME` placeholders.
 - Final names and contribution descriptions should be confirmed before submission.
-- Final Moodle submission may require exporting `report/final_report.md` to PDF.
+- Regenerate `report/final_report.pdf` whenever `report/final_report.md` changes, then visually inspect the PDF before submission.

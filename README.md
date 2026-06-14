@@ -16,7 +16,7 @@ This was prepared as a COEN 330 course project. The repository is organized so t
 - Dataset notes: `data/data_link.txt`
 - Course guideline copy: `docs/COEN330_Project_Guidelines.pdf`
 
-The dataset is synthetic and small enough to keep in the repository. It has 10,000 rows and a ready-made binary target.
+The dataset is synthetic and small enough to keep in the repository. It has 10,000 rows and a ready-made binary target. I chose AI4I because it fits the course topic well: it is about machine condition data, has a clear failure label, and is small enough for teammates or the instructor to rerun quickly.
 
 Target:
 
@@ -146,6 +146,8 @@ python demo/demo.py
 
 The demo loads `models/final_model.joblib`, reads sample rows from `data/processed/ai4i_processed.csv`, and prints the true class, predicted class, and predicted probability of machine failure.
 
+This is only a local course-project demo. It is not a deployment-ready maintenance system.
+
 ## Where Things Are
 
 - Source code: `src/`
@@ -154,6 +156,7 @@ The demo loads `models/final_model.joblib`, reads sample rows from `data/process
 - Reports: `report/`
 - Results and plots: `results/`
 - Final model: `models/final_model.joblib`
+- Technical review: `docs/TECHNICAL_REVIEW.md`
 - Repository structure guide: `docs/REPOSITORY_STRUCTURE.md`
 
 The notebooks are walkthroughs for reading and presenting the work. The reproducible pipeline is in `src/`.

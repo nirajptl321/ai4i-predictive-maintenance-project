@@ -20,6 +20,8 @@
 - [x] Run `git diff --check`.
 - [x] Create `docs/comprehensive_project_review.md`.
 - [ ] Replace remaining `TODO_NAME` placeholders in the team contribution section before submission.
-- [ ] Export `report/final_report.md` to PDF if required for Moodle submission.
+- [ ] Regenerate `report/final_report.pdf` after any final report Markdown edits.
+- [ ] Visually inspect `report/final_report.pdf` before submission.
+- [ ] Create final Moodle ZIP.
 - [ ] Review final report for course-specific formatting requirements.
 - [ ] Confirm external tools and AI-assistance disclosure follows the course policy.

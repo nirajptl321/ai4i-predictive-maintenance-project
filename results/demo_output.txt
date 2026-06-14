@@ -1,26 +1,83 @@
 AI4I Machine Failure Prediction Demo
+This demo shows a few sample predictions only. Full evaluation is done by python -m src.evaluate.
 This is a simple local demo, not deployment software.
 Loaded model: HistGradientBoostingClassifier
 
-Sample 1 from processed row index 0
+Sample 1
+  Original processed row index: 0
+  True class: 0
+  Predicted class: 0
+  Predicted probability of machine failure: 0.0005
+  Input feature values:
   Type: M
   Air temperature [K]: 298.1
   Process temperature [K]: 308.6
   Rotational speed [rpm]: 1551
   Torque [Nm]: 42.8
   Tool wear [min]: 0
+
+Sample 2
+  Original processed row index: 1
+  True class: 0
+  Predicted class: 0
+  Predicted probability of machine failure: 0.0007
+  Input feature values:
+  Type: L
+  Air temperature [K]: 298.2
+  Process temperature [K]: 308.7
+  Rotational speed [rpm]: 1408
+  Torque [Nm]: 46.3
+  Tool wear [min]: 3
+
+Sample 3
+  Original processed row index: 2
   True class: 0
   Predicted class: 0
   Predicted probability of machine failure: 0.0005
+  Input feature values:
+  Type: L
+  Air temperature [K]: 298.1
+  Process temperature [K]: 308.5
+  Rotational speed [rpm]: 1498
+  Torque [Nm]: 49.4
+  Tool wear [min]: 5
 
-Sample 2 from processed row index 50
+Sample 4
+  Original processed row index: 50
+  True class: 1
+  Predicted class: 1
+  Predicted probability of machine failure: 0.8482
+  Input feature values:
   Type: L
   Air temperature [K]: 298.9
   Process temperature [K]: 309.1
   Rotational speed [rpm]: 2861
   Torque [Nm]: 4.6
   Tool wear [min]: 143
+
+Sample 5
+  Original processed row index: 69
   True class: 1
   Predicted class: 1
-  Predicted probability of machine failure: 0.8482
+  Predicted probability of machine failure: 0.9579
+  Input feature values:
+  Type: L
+  Air temperature [K]: 298.9
+  Process temperature [K]: 309.0
+  Rotational speed [rpm]: 1410
+  Torque [Nm]: 65.7
+  Tool wear [min]: 191
+
+Sample 6
+  Original processed row index: 77
+  True class: 1
+  Predicted class: 0
+  Predicted probability of machine failure: 0.4113
+  Input feature values:
+  Type: L
+  Air temperature [K]: 298.8
+  Process temperature [K]: 308.9
+  Rotational speed [rpm]: 1455
+  Torque [Nm]: 41.3
+  Tool wear [min]: 208
 

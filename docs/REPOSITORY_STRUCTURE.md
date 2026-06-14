@@ -55,7 +55,7 @@ The authoritative reproducible pipeline is in `src/`, not in the notebooks.
 ## 8. report/
 
 - `report/final_report.md`: editable final report source.
-- `report/final_report.pdf`: submission report if the Markdown report is exported to PDF for Moodle or instructor submission.
+- `report/final_report.pdf`: PDF version generated from `report/final_report.md` for Moodle or instructor submission.
 - `report/final_report_draft.md`: draft report source/history.
 - `report/REPORT_NOTES.md`: short notes about final model, metrics, leakage handling, and report TODOs.
 
@@ -63,6 +63,7 @@ The authoritative reproducible pipeline is in `src/`, not in the notebooks.
 
 - `docs/COEN330_Project_Guidelines.pdf`: official COEN 330 project guideline PDF copied into the repository.
 - `docs/comprehensive_project_review.md`: detailed guideline compliance review and evidence paths.
+- `docs/TECHNICAL_REVIEW.md`: technical review of the working ML pipeline, leakage prevention, models, tuning, evaluation, demo, and reproducibility.
 - `docs/guideline_checklist.md`: project guideline checklist.
 - `docs/final_submission_checklist.md`: final packaging and submission checklist.
 - `docs/github_repo_settings.md`: GitHub visibility, branch protection, and team collaboration settings notes.
