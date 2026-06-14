@@ -163,12 +163,10 @@ Overall, this project shows a clear binary classification workflow for machine f
 ## 14. Team Contributions
 
 - Niraj Patel — coordinated the repository, integrated the main workflow, organized the dataset pipeline, implemented the preprocessing/training/evaluation scripts, prepared the demo, and assembled the documentation and reproducibility checks.
-- Member 2: TODO_NAME — supported dataset review and helped check the feature/target definitions.
-- Member 3: TODO_NAME — supported EDA review and helped check plots and class balance observations.
-- Member 4: TODO_NAME — supported model result review and helped check validation/test metric interpretation.
-- Member 5: TODO_NAME — supported final report review, demo instructions, and submission checklist review.
-
-Final names and contribution descriptions should be confirmed before submission.
+- Samuel Lavallée — supported dataset review and helped check the feature/target definitions.
+- Thinoushan Senathirajah — supported EDA review and helped check plots and class balance observations.
+- Omar Shrit — supported model result review and helped check validation/test metric interpretation.
+- Arnav Singh — supported final report review, demo instructions, and submission checklist review.
 
 ## 15. References
 

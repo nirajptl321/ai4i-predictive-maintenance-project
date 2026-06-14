@@ -38,7 +38,7 @@ The PDF is the COEN 330 Applied Machine Learning Summer 2026 project guideline. 
 | Notebooks or scripts | Complete | `notebooks/`, `src/` | Notebooks are walkthroughs; `src/` is the authoritative pipeline. |
 | Saved model / results / figures | Complete | `models/final_model.joblib`, `results/`, `results/plots/` | Final model, metrics, logs, and plots are present. |
 | Final report structure | Complete | `report/final_report.md`, `report/final_report_draft.md` | All 15 required sections are present. |
-| Team contribution section | Partial | `report/final_report.md`, `report/final_report_draft.md` | Contribution wording is present and honest, but `TODO_NAME` placeholders remain for Members 2-5. |
+| Team contribution section | Complete | `report/final_report.md`, `report/final_report_draft.md` | Team names and contribution wording are finalized. |
 | References | Complete | `report/final_report.md`, `report/final_report_draft.md` | Includes UCI, scikit-learn, and pandas references. |
 | Academic integrity / external tools acknowledgment | Complete | `README.md`, `report/final_report.md` | External libraries and tool-supported support are acknowledged. |
 | Final submission checklist | Complete | `docs/final_submission_checklist.md` | Checklist exists and includes remaining manual tasks. |
@@ -91,8 +91,7 @@ The project satisfies the main COEN 330 technical and documentation requirements
 
 ## Remaining TODOs
 
-- Replace remaining `TODO_NAME` placeholders with real team member names before final submission.
-- Confirm final contribution descriptions with the team.
+- Team contribution names have been filled in; do a final human review before submission.
 - Regenerate `report/final_report.pdf` if `report/final_report.md` changes again.
 - Visually inspect `report/final_report.pdf` before submission.
 - Create the final Moodle ZIP.

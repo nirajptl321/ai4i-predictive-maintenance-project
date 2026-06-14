@@ -14,6 +14,5 @@
 - Official guideline PDF copied to `docs/COEN330_Project_Guidelines.pdf`.
 - Tuned models: Decision Tree, Random Forest, HistGradientBoostingClassifier.
 - Five compared models: Logistic Regression baseline, Decision Tree, Random Forest, Extra Trees, HistGradientBoostingClassifier.
-- Contribution wording now names Niraj Patel for main integration and technical workflow while keeping remaining member names as `TODO_NAME` placeholders.
-- Final names and contribution descriptions should be confirmed before submission.
+- Team contribution names and wording are filled in for Niraj Patel, Samuel Lavallée, Thinoushan Senathirajah, Omar Shrit, and Arnav Singh.
 - Regenerate `report/final_report.pdf` whenever `report/final_report.md` changes, then visually inspect the PDF before submission.

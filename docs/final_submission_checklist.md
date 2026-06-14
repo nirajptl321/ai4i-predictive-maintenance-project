@@ -19,7 +19,7 @@
 - [x] Confirm `results/demo_output.txt` exists.
 - [x] Run `git diff --check`.
 - [x] Create `docs/comprehensive_project_review.md`.
-- [ ] Replace remaining `TODO_NAME` placeholders in the team contribution section before submission.
+- [x] Finalize team names and contribution wording.
 - [ ] Regenerate `report/final_report.pdf` after any final report Markdown edits.
 - [ ] Visually inspect `report/final_report.pdf` before submission.
 - [ ] Create final Moodle ZIP.
