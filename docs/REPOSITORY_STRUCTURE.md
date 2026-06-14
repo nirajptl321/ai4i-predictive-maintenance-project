@@ -45,6 +45,7 @@ The authoritative reproducible pipeline is in `src/`, not in the notebooks.
 - `results/missing_values_summary.csv`: missing-values summary from EDA.
 - `results/full_reproducibility_run.txt`: captured output from the full successful pipeline run.
 - `results/demo_output.txt`: captured output from the local demo script.
+- `results/course_audit_run_output.txt`: captured output from the course-content audit verification commands.
 - `results/plots/`: generated figures, including class balance, feature distributions, correlation heatmap, target-vs-feature plot, failure mode counts, model comparison, confusion matrix, and feature importance.
 
 ## 7. demo/
@@ -62,6 +63,9 @@ The authoritative reproducible pipeline is in `src/`, not in the notebooks.
 ## 9. docs/
 
 - `docs/COEN330_Project_Guidelines.pdf`: official COEN 330 project guideline PDF copied into the repository.
+- `docs/course_materials/`: local course lecture/tutorial files used for the course-content audit.
+- `docs/COURSE_CONTENT_AUDIT.md`: summary of relevant course concepts and how the project applies them.
+- `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`: requirement-by-requirement audit against the guideline and course concepts.
 - `docs/comprehensive_project_review.md`: detailed guideline compliance review and evidence paths.
 - `docs/TECHNICAL_REVIEW.md`: technical review of the working ML pipeline, leakage prevention, models, tuning, evaluation, demo, and reproducibility.
 - `docs/guideline_checklist.md`: project guideline checklist.

@@ -1,12 +1,15 @@
 # Comprehensive Project Review
 
-This review checks the AI4I predictive maintenance project against the official COEN 330 project guideline PDF and the current repository files.
+This review checks the AI4I predictive maintenance project against the official COEN 330 project guideline PDF, the available course materials, and the current repository files.
 
 ## Guideline Source Used
 
 The official guideline PDF exists and was used for this review:
 
 - `docs/COEN330_Project_Guidelines.pdf`
+- `docs/course_materials/`
+- `docs/COURSE_CONTENT_AUDIT.md`
+- `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`
 
 The PDF is the COEN 330 Applied Machine Learning Summer 2026 project guideline. It asks for a clear machine learning problem, dataset documentation, preprocessing, EDA, feature engineering or feature selection, model development, validation, evaluation, interpretation, reproducibility, a demo, a final report, and a team contribution section.
 
@@ -42,6 +45,7 @@ The PDF is the COEN 330 Applied Machine Learning Summer 2026 project guideline. 
 | References | Complete | `report/final_report.md`, `report/final_report_draft.md` | Includes UCI, scikit-learn, and pandas references. |
 | Academic integrity / external tools acknowledgment | Complete | `README.md`, `report/final_report.md` | External libraries and tool-supported support are acknowledged. |
 | Final submission checklist | Complete | `docs/final_submission_checklist.md` | Checklist exists and includes remaining manual tasks. |
+| Course-content audit | Complete | `docs/COURSE_CONTENT_AUDIT.md`, `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md` | Project was checked against the official guideline and lecture/tutorial concepts. |
 | Final report PDF | Partial | `report/final_report.pdf`, `docs/final_submission_checklist.md` | PDF exists, but it should be regenerated after any final report Markdown edit and visually inspected before submission. |
 | Moodle ZIP packaging | Partial | `docs/final_submission_checklist.md` | Final ZIP must still be created manually before Moodle submission. |
 
@@ -92,6 +96,7 @@ The project satisfies the main COEN 330 technical and documentation requirements
 ## Remaining TODOs
 
 - Team contribution names have been filled in; do a final human review before submission.
+- Review `docs/COURSE_CONTENT_AUDIT.md` and `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md` before final packaging.
 - Regenerate `report/final_report.pdf` if `report/final_report.md` changes again.
 - Visually inspect `report/final_report.pdf` before submission.
 - Create the final Moodle ZIP.

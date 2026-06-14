@@ -20,6 +20,9 @@
 - [x] Run `git diff --check`.
 - [x] Create `docs/comprehensive_project_review.md`.
 - [x] Finalize team names and contribution wording.
+- [x] Complete course-content audit against the official guideline and lecture/tutorial materials.
+- [x] Create `docs/COURSE_CONTENT_AUDIT.md`.
+- [x] Create `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`.
 - [ ] Regenerate `report/final_report.pdf` after any final report Markdown edits.
 - [ ] Visually inspect `report/final_report.pdf` before submission.
 - [ ] Create final Moodle ZIP.

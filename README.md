@@ -157,6 +157,8 @@ This is only a local course-project demo. It is not a deployment-ready maintenan
 - Results and plots: `results/`
 - Final model: `models/final_model.joblib`
 - Technical review: `docs/TECHNICAL_REVIEW.md`
+- Course content audit: `docs/COURSE_CONTENT_AUDIT.md`
+- Guideline/course compliance review: `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`
 - Repository structure guide: `docs/REPOSITORY_STRUCTURE.md`
 
 The notebooks are walkthroughs for reading and presenting the work. The reproducible pipeline is in `src/`.

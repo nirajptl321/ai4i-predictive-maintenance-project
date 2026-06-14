@@ -22,5 +22,5 @@
 - [x] README includes installation and run instructions.
 - [x] Report includes all required COEN 330 sections.
 - [x] Reproducibility run log is generated.
-- [ ] Team member names are finalized.
-
+- [x] Team member names are finalized.
+- [x] Course-content audit is documented.

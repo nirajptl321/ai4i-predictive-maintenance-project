@@ -95,6 +95,11 @@ Generated EDA outputs:
 
 The failure mode count plot is explanatory only and is not part of the model feature set.
 
+Outlier/distribution note:
+
+- The feature distribution plots are used for a basic check of unusual sensor values.
+- No automatic outlier removal is applied. The dataset is synthetic, the values are machine sensor readings, and removing rows would change the fixed training/evaluation setup without a clear bug.
+
 ## Train / Validation / Test Split
 
 Split helper:
@@ -237,3 +242,14 @@ Known modeling limitations remain:
 - The project does not tune the probability threshold.
 - The demo is local and is not a production maintenance system.
 
+## Course Audit Note
+
+The project was also checked against the official COEN 330 guideline PDF and the available course lecture/tutorial materials. The main course concepts are covered: supervised classification, preprocessing, one-hot encoding, scaling, stratified train/validation/test splitting, validation-based model selection, leakage prevention, model comparison, imbalanced classification metrics, confusion-matrix interpretation, and reproducibility.
+
+Optional extensions from the course material that were left as future work:
+
+- Tune the decision threshold to trade precision against recall.
+- Add PR-AUC or a precision-recall curve for the imbalanced failure class.
+- Add a ROC curve plot.
+
+These were not added during the audit because the fixed reported metrics and model selection were not changed.
