@@ -79,7 +79,7 @@ The compliance check used:
 - Demo: `demo/demo.py` loads the saved model and predicts on sample processed rows.
 - Notebooks: five explanatory notebooks are present under `notebooks/`.
 - Final report structure: all 15 required report sections are present.
-- Team contribution section: present with placeholder names.
+- Team contribution section: present. Niraj Patel is listed for main integration and technical workflow; remaining teammates still use `TODO_NAME` placeholders.
 - References: UCI dataset, scikit-learn, and pandas references are included.
 - Academic integrity / AI-tool acknowledgment: README and report now include external tools and AI-assistance disclosure text.
 
@@ -150,7 +150,7 @@ Evidence:
 
 ## Partial Items
 
-- Team contribution names are placeholders (`TODO_NAME`) until the team fills in real names.
+- Some team contribution names are placeholders (`TODO_NAME`) until the team fills in real names and confirms final descriptions.
 - The guideline asks for final report submission as a PDF for Moodle. The repository currently includes Markdown report files: `report/final_report.md` and `report/final_report_draft.md`. Export to PDF remains a final packaging step if Moodle requires it.
 - The guideline recommends screenshots or a short video for the demo. The project includes a working command-line demo and captured `results/demo_output.txt`, but no screenshot or video.
 
@@ -185,9 +185,9 @@ No required repository component was found missing during this review.
 
 ## Final Remaining TODOs
 
-- Replace `TODO_NAME` placeholders with real team member names.
+- Replace remaining `TODO_NAME` placeholders with real team member names.
+- Confirm final contribution descriptions before submission.
 - Export `report/final_report.md` to PDF if required for Moodle submission.
 - Confirm the final external tools and AI-assistance disclosure wording matches the instructor's policy.
 - Optionally add a demo screenshot or short video if the team wants to follow the recommendation in the guideline PDF.
 - Commit the repository intentionally after reviewing all untracked files.
-

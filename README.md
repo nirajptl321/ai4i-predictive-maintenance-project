@@ -1,47 +1,31 @@
 # Machine Failure Prediction Using the AI4I 2020 Predictive Maintenance Dataset
 
-## Problem Statement
+This project looks at whether basic machine sensor readings can be used to predict machine failure.
 
-This COEN 330 Applied Machine Learning project predicts whether a machine will fail using the AI4I 2020 Predictive Maintenance Dataset. The task is supervised binary classification.
+The goal was to build a clean machine learning workflow from raw data to final evaluation. I kept the project simple and reproducible so the results can be checked from the command line.
+
+Machine failure prediction matters because missed failures can lead to downtime, repair costs, and safety problems. For that reason, this project pays attention to recall and F2-score in addition to the main F1-score.
+
+This was prepared as a COEN 330 course project. The repository is organized so the workflow can be reviewed and rerun.
+
+## Dataset
+
+- Dataset: AI4I 2020 Predictive Maintenance Dataset
+- Source: UCI Machine Learning Repository
+- Raw file: `data/raw/ai4i2020.csv`
+- Dataset notes: `data/data_link.txt`
+- Course guideline copy: `docs/COEN330_Project_Guidelines.pdf`
+
+The dataset is synthetic and small enough to keep in the repository. It has 10,000 rows and a ready-made binary target.
 
 Target:
 
 - `machine_failure = 0`: no machine failure
 - `machine_failure = 1`: machine failure
 
-The main metric is F1-score. Recall and F2-score are secondary metrics because missing a failure is costly.
+## Features Used
 
-## Dataset Source
-
-- Dataset: AI4I 2020 Predictive Maintenance Dataset
-- Source: UCI Machine Learning Repository
-- Local file: `data/raw/ai4i2020.csv`
-- Link notes: `data/data_link.txt`
-- Course guideline copy: `docs/COEN330_Project_Guidelines.pdf`
-
-The dataset is small and synthetic, with 10,000 rows and a ready-made machine failure target.
-
-## GitHub Data Policy
-
-The AI4I CSV files and final model are small enough to commit directly to GitHub:
-
-- Commit `data/raw/ai4i2020.csv`
-- Commit `data/processed/ai4i_processed.csv`
-- Commit `models/final_model.joblib`
-
-Do not use Git LFS for this project unless a future file becomes large. Downloaded ZIP files such as `data/raw/*.zip` remain ignored.
-
-## Team Collaboration
-
-This GitHub repository is public. Do not push directly to `main` for normal project work. Create a branch for changes, push that branch, and open a pull request. The repository owner reviews and merges final changes into `main`.
-
-## Repository Structure
-
-See `docs/REPOSITORY_STRUCTURE.md` for a teammate-friendly explanation of the project folders and files.
-
-## Input Features
-
-Only these model input features are used:
+The model uses these input features:
 
 - `type`
 - `air_temperature_k`
@@ -50,16 +34,14 @@ Only these model input features are used:
 - `torque_nm`
 - `tool_wear_min`
 
-The preprocessing step converts the original column names into Python-friendly names.
+The original column names are cleaned into Python-friendly snake_case during preprocessing.
 
-## Excluded Columns
-
-ID columns are dropped if present:
+ID columns are dropped:
 
 - `UDI`
 - `Product ID`
 
-Failure mode columns are not used as model features because they leak target information:
+These failure mode columns are not used as model inputs because they leak target information:
 
 - `TWF`
 - `HDF`
@@ -67,72 +49,50 @@ Failure mode columns are not used as model features because they leak target inf
 - `OSF`
 - `RNF`
 
-These columns are kept only for EDA explanation, especially the failure mode count plot.
+They are only used in EDA to explain failure mode counts.
 
-## Methodology
+## Project Workflow
 
 1. Load `data/raw/ai4i2020.csv`.
-2. Clean column names into snake_case.
+2. Clean column names.
 3. Drop ID columns.
-4. Keep diagnostic failure mode columns only for EDA, not modeling.
+4. Keep failure mode columns only for EDA, not training.
 5. Use `machine_failure` as the target.
 6. One-hot encode `type`.
-7. Split data with `random_state=42` and stratification:
+7. Split the data with stratification and `random_state=42`:
    - 70% train
    - 15% validation
    - 15% test
-8. Tune/select models using the validation set.
-9. Use the test set only once for final evaluation.
+8. Use the validation set for model selection and tuning.
+9. Use the test set once for final evaluation.
 
-## Feature Engineering and Representation
+## Models Used
 
-- Column names are cleaned into Python-friendly snake_case.
-- `type` is one-hot encoded.
-- Numeric features are standardized inside the modeling pipeline.
-- Feature selection removes ID columns and excludes diagnostic failure mode columns to prevent target leakage.
-- No extra synthetic features are created; the project intentionally keeps the representation simple and reproducible.
+Five models were trained and compared:
 
-## Models
+| Model                          | Purpose                        | Tuning         |
+| ------------------------------ | ------------------------------ | -------------- |
+| Logistic Regression            | Simple baseline                | Not grid-tuned |
+| Decision Tree                  | Interpretable nonlinear model  | Tuned          |
+| Random Forest                  | Ensemble tree model            | Tuned          |
+| Extra Trees                    | Randomized ensemble tree model | Not grid-tuned |
+| HistGradientBoostingClassifier | Final selected boosting model  | Tuned          |
 
-Exactly five models are trained and compared:
-
-- Logistic Regression baseline
-- Decision Tree
-- Random Forest
-- Extra Trees
-- HistGradientBoostingClassifier
-
-Hyperparameter tuning is applied to:
-
-- Decision Tree
-- Random Forest
-- HistGradientBoostingClassifier
-
-Small grids are used so the full pipeline runs quickly. `class_weight="balanced"` is used for Logistic Regression, Decision Tree, Random Forest, and Extra Trees.
-
-Tuning grids:
+The tuned models used small grids so the project would run quickly:
 
 - Decision Tree: `criterion`, `max_depth`, `min_samples_leaf`
 - Random Forest: `n_estimators`, `max_depth`, `min_samples_leaf`
 - HistGradientBoostingClassifier: `learning_rate`, `max_iter`, `max_leaf_nodes`
 
-## Metrics
+`class_weight="balanced"` is used for Logistic Regression, Decision Tree, Random Forest, and Extra Trees.
 
-The project reports:
+## Results
 
-- Accuracy
-- Precision
-- Recall
-- F1-score
-- F2-score
-- ROC-AUC
-- Confusion matrix
+Selected model:
 
-## Current Results
+`HistGradientBoostingClassifier`
 
-Validation selected `HistGradientBoostingClassifier` using F1-score.
-
-Held-out test metrics from `results/test_metrics.csv`:
+Test metrics:
 
 - Accuracy: 0.9853
 - Precision: 0.8718
@@ -140,11 +100,15 @@ Held-out test metrics from `results/test_metrics.csv`:
 - F1-score: 0.7556
 - F2-score: 0.6996
 - ROC-AUC: 0.9750
-- Confusion matrix counts: TN=1444, FP=5, FN=17, TP=34
+- Confusion matrix: TN=1444, FP=5, FN=17, TP=34
 
-## Install Dependencies
+The model caught 34 failure cases and missed 17 failure cases in the test set. It also produced 5 false alarms. Accuracy is high, but recall is important because missed failures are costly.
 
-From the repository root:
+Full validation results are in `results/metrics_table.csv`. Final test results are in `results/test_metrics.csv`.
+
+## How To Run
+
+Create and activate a virtual environment:
 
 ```bash
 python -m venv .venv
@@ -152,11 +116,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-If `.venv` already exists, activate it and install the requirements.
-
-## Run the Full Pipeline
-
-From the repository root with the environment activated:
+Run the full pipeline:
 
 ```bash
 python -m src.preprocessing
@@ -166,7 +126,7 @@ python -m src.evaluate
 python demo/demo.py
 ```
 
-To capture a reproducibility log:
+Capture the full run output:
 
 ```bash
 {
@@ -178,11 +138,25 @@ To capture a reproducibility log:
 } > results/full_reproducibility_run.txt 2>&1
 ```
 
-To capture only the demo output:
+Run only the demo:
 
 ```bash
-python demo/demo.py > results/demo_output.txt
+python demo/demo.py
 ```
+
+The demo loads `models/final_model.joblib`, reads sample rows from `data/processed/ai4i_processed.csv`, and prints the true class, predicted class, and predicted probability of machine failure.
+
+## Where Things Are
+
+- Source code: `src/`
+- Demo: `demo/`
+- Notebooks: `notebooks/`
+- Reports: `report/`
+- Results and plots: `results/`
+- Final model: `models/final_model.joblib`
+- Repository structure guide: `docs/REPOSITORY_STRUCTURE.md`
+
+The notebooks are walkthroughs for reading and presenting the work. The reproducible pipeline is in `src/`.
 
 ## Expected Outputs
 
@@ -202,23 +176,14 @@ python demo/demo.py > results/demo_output.txt
 - `results/plots/failure_mode_counts.png`
 - `results/plots/target_vs_features.png`
 
-## Demo
-
-Run:
-
-```bash
-python demo/demo.py
-```
-
-The demo loads `models/final_model.joblib`, reads examples from `data/processed/ai4i_processed.csv`, and prints the true class, predicted class, and predicted probability of machine failure. It is a simple local demonstration, not deployment software.
-
 ## Limitations
 
-- The dataset is synthetic, so results may not transfer directly to real industrial equipment.
-- The positive class is rare, which makes recall and F2-score important.
-- The model uses only the approved sensor/product features and does not use failure mode labels for prediction.
-- The project does not include live data ingestion, monitoring, deployment, or cost-sensitive threshold optimization.
+- The dataset is synthetic, so the results may not transfer directly to real industrial machines.
+- The failure class is rare, so recall and F2-score matter more than accuracy alone.
+- The project does not tune the decision threshold after selecting the final model.
+- The demo is local and simple. It is not deployment software.
+- The project does not include live monitoring, retraining, or production data ingestion.
 
 ## Academic Integrity / External Tools Note
 
-This repository is structured so the full pipeline can be rerun and inspected. Python libraries used include pandas, scikit-learn, matplotlib, seaborn, joblib, and nbformat. The team reviewed and verified the final repository contents and is responsible for the submitted work. The authoritative implementation is in `src/`, and generated outputs can be reproduced from the raw CSV.
+This repository is set up so the pipeline can be rerun and checked. Python libraries used include pandas, scikit-learn, matplotlib, seaborn, joblib, and nbformat. The team reviewed and verified the final repository contents and is responsible for the submitted work.

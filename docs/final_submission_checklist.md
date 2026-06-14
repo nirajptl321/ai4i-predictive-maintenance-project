@@ -19,7 +19,7 @@
 - [x] Confirm `results/demo_output.txt` exists.
 - [x] Run `git diff --check`.
 - [x] Create `docs/comprehensive_project_review.md`.
-- [ ] Replace `TODO_NAME` placeholders in the team contribution section.
+- [ ] Replace remaining `TODO_NAME` placeholders in the team contribution section before submission.
 - [ ] Export `report/final_report.md` to PDF if required for Moodle submission.
 - [ ] Review final report for course-specific formatting requirements.
 - [ ] Confirm external tools and AI-assistance disclosure follows the course policy.

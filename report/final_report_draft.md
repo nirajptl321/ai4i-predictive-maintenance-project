@@ -158,13 +158,15 @@ The demo script `demo/demo.py` loads `models/final_model.joblib` and sample rows
 
 This project provides a complete, reproducible binary classification workflow for machine failure prediction. It avoids leakage by excluding failure mode columns from model features, uses validation-based model selection, saves a final model, and evaluates once on the held-out test set. HistGradientBoostingClassifier achieved the best validation F1-score and produced a test F1-score of 0.7556.
 
-## 14. Team Contribution Section
+## 14. Team Contributions
 
-- Member 1: TODO_NAME — project coordination, GitHub, README, report integration
-- Member 2: TODO_NAME — dataset documentation, preprocessing, leakage review
-- Member 3: TODO_NAME — EDA, figures, feature analysis
-- Member 4: TODO_NAME — model training, hyperparameter tuning, validation
-- Member 5: TODO_NAME — evaluation, demo, report review, final packaging
+- Niraj Patel — coordinated the repository, integrated the main project workflow, organized the dataset pipeline, implemented the preprocessing/training/evaluation scripts, prepared the demo, and assembled the final documentation and reproducibility checks.
+- Member 2: TODO_NAME — supported dataset review and helped check the feature/target definitions.
+- Member 3: TODO_NAME — supported EDA review and helped check plots and class balance observations.
+- Member 4: TODO_NAME — supported model result review and helped check validation/test metric interpretation.
+- Member 5: TODO_NAME — supported final report review, demo instructions, and submission checklist review.
+
+Final names and contribution descriptions should be confirmed before submission.
 
 ## 15. References
 
