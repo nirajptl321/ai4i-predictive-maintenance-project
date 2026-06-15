@@ -1,13 +1,13 @@
 # Comprehensive Project Review
 
-This review checks the AI4I predictive maintenance project against the official COEN 330 project guideline PDF, the available course materials, and the current repository files.
+This review checks the AI4I predictive maintenance project against the official COEN 330 project guideline PDF, local course materials used for audit/review, and the current repository files.
 
 ## Guideline Source Used
 
 The official guideline PDF exists and was used for this review:
 
 - `docs/COEN330_Project_Guidelines.pdf`
-- `docs/course_materials/`
+- `docs/course_materials/` was used locally for audit/review and is intentionally excluded from the final Moodle ZIP.
 - `docs/COURSE_CONTENT_AUDIT.md`
 - `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`
 
@@ -46,9 +46,9 @@ The PDF is the COEN 330 Applied Machine Learning Summer 2026 project guideline. 
 | Academic integrity / external tools acknowledgment | Complete | `README.md`, `report/final_report.md` | External libraries and tool-supported support are acknowledged. |
 | Final submission checklist | Complete | `docs/final_submission_checklist.md` | Checklist exists and includes remaining manual tasks. |
 | Course-content audit | Complete | `docs/COURSE_CONTENT_AUDIT.md`, `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md` | Project was checked against the official guideline and lecture/tutorial concepts. |
-| Final report PDF | Partial | `report/final_report.pdf`, `docs/final_submission_checklist.md` | PDF exists. It still needs final human visual inspection before submission. |
+| Final report PDF | Complete | `report/final_report.pdf`, `docs/final_submission_checklist.md` | PDF exists and has been visually inspected for submission. |
 | Final report Word document | Complete | `report/final_report.docx`, `docs/final_submission_checklist.md` | Word report exists as the final DOCX report with clean figures. |
-| Moodle ZIP packaging | Partial | `docs/final_submission_checklist.md` | Final ZIP must still be created manually before Moodle submission. |
+| Moodle ZIP packaging | Complete | `AI4I_Predictive_Maintenance_Project_Final.zip`, `docs/final_submission_checklist.md` | Final ZIP exists and keeps only the project files needed for submission. It intentionally excludes local course materials and development folders. |
 
 ## Report Structure Check
 
@@ -90,15 +90,11 @@ Plain-language interpretation: the model caught 34 failure cases and missed 17 f
 
 ## Final Project Verdict
 
-Verdict: almost ready.
+Verdict: ready.
 
-The project satisfies the main COEN 330 technical and documentation requirements. The remaining items are manual submission tasks rather than missing machine learning work.
+The project satisfies the main COEN 330 technical and documentation requirements. The final ZIP is created, and the local course-material folder is excluded from the Moodle submission package.
 
 ## Remaining TODOs
 
-- Review `docs/COURSE_CONTENT_AUDIT.md` and `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md` before final packaging.
-- Visually inspect `report/final_report.pdf` before submission.
-- Regenerate exported PDF/DOCX files if current or later Markdown edits must be reflected exactly in the submitted report files.
-- Create the final Moodle ZIP.
 - Confirm the external tools and AI-assistance disclosure wording matches the instructor's policy.
 - Optionally add a demo screenshot or short video if the team wants to follow the guideline recommendation.

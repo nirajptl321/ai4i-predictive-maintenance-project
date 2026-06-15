@@ -261,7 +261,7 @@ Known modeling limitations remain:
 
 ## Course Audit Note
 
-The project was also checked against the official COEN 330 guideline PDF and the available course lecture/tutorial materials. The main course concepts are covered: supervised classification, preprocessing, one-hot encoding, scaling, stratified train/validation/test splitting, validation-based model selection, leakage prevention, model comparison, imbalanced classification metrics, confusion-matrix interpretation, and reproducibility.
+The project was also checked against the official COEN 330 guideline PDF and local course lecture/tutorial materials. Those course materials were used only for audit/review and are intentionally excluded from the final Moodle ZIP. The main course concepts are covered: supervised classification, preprocessing, one-hot encoding, scaling, stratified train/validation/test splitting, validation-based model selection, leakage prevention, model comparison, imbalanced classification metrics, confusion-matrix interpretation, and reproducibility.
 
 Optional extensions from the course material that were left as future work:
 

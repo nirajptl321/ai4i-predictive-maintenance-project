@@ -2,12 +2,12 @@
 
 Date: 2026-06-14
 
-This review checks the project against the official COEN 330 project guideline and the available course lecture/tutorial materials. It focuses on the technical project work: data processing, leakage prevention, EDA, model comparison, tuning, validation/test separation, final evaluation, demo, reproducibility, and GitHub clarity.
+This review checks the project against the official COEN 330 project guideline and local course lecture/tutorial materials. It focuses on the technical project work: data processing, leakage prevention, EDA, model comparison, tuning, validation/test separation, final evaluation, demo, reproducibility, and GitHub clarity.
 
 ## Sources Used
 
 - Official guideline: `docs/COEN330_Project_Guidelines.pdf`
-- Course materials: `docs/course_materials/`
+- Course materials: `docs/course_materials/` was used locally for audit/review and is intentionally excluded from the final Moodle ZIP.
 - Course concept summary: `docs/COURSE_CONTENT_AUDIT.md`
 - Technical project review: `docs/TECHNICAL_REVIEW.md`
 - Model tuning summary: `docs/MODEL_TUNING_SUMMARY.md`
@@ -48,14 +48,14 @@ This review checks the project against the official COEN 330 project guideline a
 | Demo | Complete | `demo/demo.py`, `demo/README.md` | Demo loads the saved model and shows sample predictions. | None |
 | Notebooks or scripts | Complete | `notebooks/`, `src/` | Notebooks are walkthroughs; `src/` is the reproducible pipeline. | None |
 | Final report sections | Complete | `report/final_report.md`, `report/final_report_draft.md` | All required report sections are present. | None for this technical audit |
-| Final report exports | Complete | `report/final_report.pdf`, `report/final_report.docx` | Final PDF and Word report files are present. | Final human review before submission |
+| Final report exports | Complete | `report/final_report.pdf`, `report/final_report.docx` | Final PDF and Word report files are present and reviewed for submission. | None |
 | Team contribution statement | Complete | `report/final_report.md`, `report/final_report_draft.md` | Team names and factual contribution wording are present. | None |
 | References | Complete | `report/final_report.md`, `report/final_report_draft.md` | UCI, scikit-learn, and pandas references are included. | None |
 | Academic integrity / external tools acknowledgment | Complete | `README.md`, `report/final_report.md` | tool-supported support and Python libraries are disclosed. | None |
 | Final submission checklist | Complete | `docs/final_submission_checklist.md` | Checklist exists and includes remaining manual submission tasks. | None |
 | Decision threshold tuning | Partial | `README.md`, `docs/TECHNICAL_REVIEW.md`, `docs/COURSE_CONTENT_AUDIT.md` | Course materials discuss threshold tradeoffs. This project keeps the default threshold and lists tuning as future work. | Optional only |
 | PR-AUC or precision-recall curve | Partial | `docs/COURSE_CONTENT_AUDIT.md`, `results/test_metrics.csv` | Guideline mentions PR-AUC for imbalanced classification. The project instead reports recall, F1, F2, ROC-AUC, and confusion matrix. | Optional only |
-| Final Moodle ZIP | Partial | `docs/final_submission_checklist.md` | Final packaging is a manual submission step. | Create ZIP before submission |
+| Final Moodle ZIP | Complete | `docs/final_submission_checklist.md` | Final ZIP exists and keeps only the project files needed for submission. It intentionally excludes local course materials and development folders. | None |
 
 ## Code Correctness Audit
 
@@ -103,11 +103,8 @@ Confusion matrix:
 
 ## Final Verdict
 
-Project status: ready from a technical machine learning standpoint, and almost ready for final course submission.
+Project status: ready from a technical machine learning standpoint and ready for final course submission.
 
-The remaining items are manual submission tasks, not missing model work:
+The only remaining item is instructor-specific confirmation, not missing model work:
 
-- Visually inspect the final PDF before submission.
-- Review the final Word report before submission.
-- Create the final Moodle ZIP.
 - Confirm the instructor's exact expectation for AI-tool disclosure wording.

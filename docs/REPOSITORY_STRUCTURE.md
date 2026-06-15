@@ -65,7 +65,7 @@ The authoritative reproducible pipeline is in `src/`, not in the notebooks.
 ## 9. docs/
 
 - `docs/COEN330_Project_Guidelines.pdf`: official COEN 330 project guideline PDF copied into the repository.
-- `docs/course_materials/`: local course lecture/tutorial files used for the course-content audit.
+- `docs/course_materials/`: local course lecture/tutorial files used for audit/review only. This folder is intentionally excluded from the final Moodle ZIP so the submission contains only the project files needed for grading.
 - `docs/COURSE_CONTENT_AUDIT.md`: summary of relevant course concepts and how the project applies them.
 - `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`: requirement-by-requirement audit against the guideline and course concepts.
 - `docs/MODEL_TUNING_SUMMARY.md`: exact model tuning grids, validation trial counts, and saved tuning outputs.

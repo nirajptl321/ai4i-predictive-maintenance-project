@@ -2,7 +2,7 @@
 
 Date: 2026-06-14
 
-This audit compares the AI4I predictive maintenance project with the official COEN 330 project guideline and the course lecture/tutorial materials available in `docs/course_materials/`.
+This audit compares the AI4I predictive maintenance project with the official COEN 330 project guideline and local course lecture/tutorial materials stored in `docs/course_materials/`. Those course materials were used only for local audit/review and are intentionally excluded from the final Moodle ZIP.
 
 The goal was not to add unnecessary features. The goal was to check whether the project matches the course concepts and to identify any weak areas that should be explained before submission.
 
@@ -28,7 +28,7 @@ The goal was not to add unnecessary features. The goal was to check whether the 
 - `docs/course_materials/coen330/coen330/COEN330_Tutorial3_Linear_Regression_Solution.ipynb`
 - `docs/course_materials/coen330/coen330/COEN_330_Tutorial_5_Notebook.ipynb`
 
-Zip files in the course materials folder were noted but not treated as primary readable course notes.
+Zip files in the course materials folder were noted but not treated as primary readable course notes. The final ZIP keeps only the project files needed for submission and excludes `docs/course_materials/`.
 
 ## Course Concepts Checked
 

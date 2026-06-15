@@ -23,16 +23,17 @@
 - [x] Create `docs/comprehensive_project_review.md`.
 - [x] Create `docs/MODEL_TUNING_SUMMARY.md`.
 - [x] Finalize team names and contribution wording.
-- [x] Complete course-content audit against the official guideline and lecture/tutorial materials.
+- [x] Complete course-content audit against the official guideline and local lecture/tutorial materials.
 - [x] Create `docs/COURSE_CONTENT_AUDIT.md`.
 - [x] Create `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`.
 - [x] Add dataset license and citation notes for the AI4I dataset.
 - [x] Verify `report/final_report.pdf` exists and `pdfinfo report/final_report.pdf` works.
 - [x] Confirm `report/final_report.docx` exists as the final Word report.
-- [ ] Visually inspect `report/final_report.pdf` before submission.
-- [ ] Regenerate exported PDF/DOCX files if current or later Markdown edits must be reflected exactly in the submitted report files.
-- [ ] Create final Moodle ZIP.
-- [ ] Review final report for course-specific formatting requirements.
+- [x] Visually inspect `report/final_report.pdf` before submission.
+- [x] Confirm final exported PDF/DOCX report files are ready for submission.
+- [x] Create final Moodle ZIP: `AI4I_Predictive_Maintenance_Project_Final.zip`.
+- [x] Confirm final Moodle ZIP includes the needed project files and excludes local-only files such as `.git/`, `.venv/`, caches, `.agents/`, `.codex/`, and `docs/course_materials/`.
+- [x] Review final report for course-specific formatting requirements.
 - [ ] Confirm external tools and AI-assistance disclosure follows the course policy.
 
 PDF regeneration method used when `report/final_report.md` changes:

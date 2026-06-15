@@ -21,4 +21,4 @@
 - Final PDF report: `report/final_report.pdf`.
 - Final Word report: `report/final_report.docx`.
 - Team contribution names and wording are filled in for Niraj Patel, Samuel Lavallée, Thinoushan Senathirajah, Omar Shrit, and Arnav Singh.
-- Regenerate exported PDF/DOCX files if current or later Markdown edits must be reflected exactly in the submitted report files.
+- Final PDF/DOCX exports are ready; regenerate them only after future source changes.
