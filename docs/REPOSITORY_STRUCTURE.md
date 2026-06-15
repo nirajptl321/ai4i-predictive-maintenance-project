@@ -24,7 +24,7 @@ The `src/` folder contains the authoritative reproducible pipeline.
 - `preprocessing.py`: cleans columns, removes ID columns, preserves diagnostic labels for EDA, and saves the processed CSV.
 - `eda.py`: creates EDA summaries and plots, including class balance, missing values, feature distributions, correlation heatmap, target-vs-feature plots, and failure mode counts.
 - `modeling.py`: defines the five models, preprocessing pipeline, validation tuning flow, model selection logic, and final-model refit helper.
-- `train.py`: trains and tunes models, compares validation metrics, selects the final model, saves `models/final_model.joblib`, and writes the model comparison plot.
+- `train.py`: trains and tunes models, saves all validation trial results, compares best validation metrics by model, selects the final model, saves `models/final_model.joblib`, and writes the model comparison plot.
 - `evaluate.py`: evaluates the saved final model on the held-out test set and writes test metrics, confusion matrix, and feature importance plot.
 - `utils.py`: shared helper functions for directory creation, feature/target splitting, train/validation/test split, metrics, probabilities, and confusion-matrix values.
 
@@ -36,17 +36,18 @@ The authoritative reproducible pipeline is in `src/`, not in the notebooks.
 
 ## 5. models/
 
-- `models/final_model.joblib`: trained final selected model package. It includes the saved preprocessing/model pipeline, selected model name, feature list, target name, excluded leakage columns, validation metrics, and related metadata.
+- `models/final_model.joblib`: trained final selected model package. It includes the saved preprocessing/model pipeline, selected model name, feature list, target name, excluded leakage columns, validation metrics, and related metadata. Candidate model objects from tuning are not saved.
 
 ## 6. results/
 
 - `results/metrics_table.csv`: validation model comparison table.
+- `results/hyperparameter_trials.csv`: complete validation trial history for every tested model and hyperparameter combination.
 - `results/test_metrics.csv`: final held-out test metrics and confusion-matrix counts.
 - `results/missing_values_summary.csv`: missing-values summary from EDA.
 - `results/full_reproducibility_run.txt`: captured output from the full successful pipeline run.
 - `results/demo_output.txt`: captured output from the local demo script.
 - `results/course_audit_run_output.txt`: captured output from the course-content audit verification commands.
-- `results/plots/`: generated figures, including class balance, feature distributions, correlation heatmap, target-vs-feature plot, failure mode counts, model comparison, confusion matrix, and feature importance.
+- `results/plots/`: generated figures, including class balance, feature distributions, correlation heatmap, target-vs-feature plot, failure mode counts, model comparison, confusion matrix, and feature importance. Plot clipping was fixed at the source and the regenerated PNGs were visually checked.
 
 ## 7. demo/
 
@@ -57,6 +58,7 @@ The authoritative reproducible pipeline is in `src/`, not in the notebooks.
 
 - `report/final_report.md`: editable final report source.
 - `report/final_report.pdf`: PDF version generated from `report/final_report.md` for Moodle or instructor submission.
+- `report/final_report.docx`: Word version of the final report with clean figures.
 - `report/final_report_draft.md`: draft report source/history.
 - `report/REPORT_NOTES.md`: short notes about final model, metrics, leakage handling, and report TODOs.
 
@@ -66,6 +68,7 @@ The authoritative reproducible pipeline is in `src/`, not in the notebooks.
 - `docs/course_materials/`: local course lecture/tutorial files used for the course-content audit.
 - `docs/COURSE_CONTENT_AUDIT.md`: summary of relevant course concepts and how the project applies them.
 - `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`: requirement-by-requirement audit against the guideline and course concepts.
+- `docs/MODEL_TUNING_SUMMARY.md`: exact model tuning grids, validation trial counts, and saved tuning outputs.
 - `docs/comprehensive_project_review.md`: detailed guideline compliance review and evidence paths.
 - `docs/TECHNICAL_REVIEW.md`: technical review of the working ML pipeline, leakage prevention, models, tuning, evaluation, demo, and reproducibility.
 - `docs/guideline_checklist.md`: project guideline checklist.

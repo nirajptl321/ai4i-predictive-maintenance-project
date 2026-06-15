@@ -16,7 +16,7 @@ Predictive maintenance is commonly framed as a classification, regression, anoma
 
 ## 4. Dataset Description
 
-The dataset is the AI4I 2020 Predictive Maintenance Dataset from the UCI Machine Learning Repository. The local raw file is `data/raw/ai4i2020.csv`. It contains 10,000 synthetic observations. The input data includes one categorical feature, `type`, and numeric operating measurements for temperature, rotational speed, torque, and tool wear.
+The dataset is the AI4I 2020 Predictive Maintenance Dataset from the UCI Machine Learning Repository. The local raw file is `data/raw/ai4i2020.csv`. It contains 10,000 synthetic observations. The dataset is distributed through UCI under CC BY 4.0 and is credited to Stephan Matzka. The input data includes one categorical feature, `type`, and numeric operating measurements for temperature, rotational speed, torque, and tool wear.
 
 Target:
 
@@ -64,6 +64,8 @@ Feature engineering and representation are intentionally simple. The project per
 
 Feature distribution plots and target-vs-feature boxplots provide visual outlier review. No rows are removed as outliers because the values represent operating conditions in the synthetic dataset and may be meaningful for failure prediction.
 
+The generated plot files were updated from the plotting code to avoid clipped text, crowded labels, and cut-off legends.
+
 ## 6. Methodology and Models
 
 The project trains exactly five models:
@@ -94,6 +96,8 @@ Tuning grids:
 - Random Forest: `n_estimators`, `max_depth`, `min_samples_leaf`
 - HistGradientBoostingClassifier: `learning_rate`, `max_iter`, `max_leaf_nodes`
 
+All candidate hyperparameter combinations are evaluated on the validation set. The full 36-trial history is saved in `results/hyperparameter_trials.csv`, while this report shows only the best validation result per model to keep the comparison table readable. The final model is selected by validation F1-score, and the test set is used only once for final held-out evaluation.
+
 ## 8. Experimental Setup
 
 The authoritative scripts are:
@@ -104,7 +108,7 @@ The authoritative scripts are:
 - `python -m src.evaluate`
 - `python demo/demo.py`
 
-The final model is saved to `models/final_model.joblib`. Validation metrics are saved to `results/metrics_table.csv`, and final test metrics are saved to `results/test_metrics.csv`.
+The final selected model is saved to `models/final_model.joblib`. Candidate model objects are not saved. Best validation metrics by model are saved to `results/metrics_table.csv`, all validation hyperparameter trials are saved to `results/hyperparameter_trials.csv`, and final test metrics are saved to `results/test_metrics.csv`.
 
 ## 9. Results and Model Comparison
 
@@ -162,16 +166,17 @@ Overall, this project shows a clear binary classification workflow for machine f
 
 ## 14. Team Contributions
 
-- Niraj Patel — coordinated the repository, integrated the main workflow, organized the dataset pipeline, implemented the preprocessing/training/evaluation scripts, prepared the demo, and assembled the documentation and reproducibility checks.
-- Samuel Lavallée — supported dataset review and helped check the feature/target definitions.
-- Thinoushan Senathirajah — supported EDA review and helped check plots and class balance observations.
-- Omar Shrit — supported model result review and helped check validation/test metric interpretation.
-- Arnav Singh — supported final report review, demo instructions, and submission checklist review.
+- Niraj Patel — Coordinated the repository, integrated the main workflow, organized the dataset pipeline, implemented the preprocessing/training/evaluation scripts, prepared the demo, and assembled the documentation and reproducibility checks.
+- Samuel Lavallée — Reviewed the dataset source, target definition, approved model inputs, and leakage-column exclusion.
+- Thinoushan Senathirajah — Reviewed the EDA outputs, class balance discussion, generated plots, and feature-distribution observations.
+- Omar Shrit — Reviewed the model comparison results, validation/test metrics, confusion matrix interpretation, and final model discussion.
+- Arnav Singh — Reviewed the final report structure, demo instructions, submission checklist, and final packaging requirements.
 
 ## 15. References
 
-1. UCI Machine Learning Repository. AI4I 2020 Predictive Maintenance Dataset. https://archive.ics.uci.edu/dataset/601/ai4i+2020+predictive+maintenance+dataset
-2. scikit-learn developers. scikit-learn: Machine Learning in Python. https://scikit-learn.org/
-3. pandas development team. pandas documentation. https://pandas.pydata.org/
+1. Stephan Matzka. AI4I 2020 Predictive Maintenance Dataset. UCI Machine Learning Repository. CC BY 4.0. https://archive.ics.uci.edu/dataset/601/ai4i+2020+predictive+maintenance+dataset
+2. Stephan Matzka. "Explainable Artificial Intelligence for Predictive Maintenance Applications." 2020.
+3. scikit-learn developers. scikit-learn: Machine Learning in Python. https://scikit-learn.org/
+4. pandas development team. pandas documentation. https://pandas.pydata.org/
 
 Academic integrity and external tools acknowledgment: this project uses standard Python libraries including pandas, scikit-learn, matplotlib, seaborn, joblib, and nbformat. The team reviewed and verified the final repository contents; the team remains responsible for understanding, verifying, and disclosing this use according to the course policy.

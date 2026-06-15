@@ -12,6 +12,8 @@ This project trains exactly five models on the AI4I processed feature set:
 
 Total validation trials saved: 36.
 
+The current selected model is HistGradientBoostingClassifier with `learning_rate=0.05`, `max_iter=100`, and `max_leaf_nodes=31`.
+
 ## Tuning Grids
 
 Logistic Regression is used as a fixed baseline and is not grid-tuned. Its estimator settings are `class_weight="balanced"`, `max_iter=1000`, `random_state=42`, and `solver="liblinear"`.

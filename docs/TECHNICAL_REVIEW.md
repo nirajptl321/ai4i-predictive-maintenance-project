@@ -95,6 +95,8 @@ Generated EDA outputs:
 
 The failure mode count plot is explanatory only and is not part of the model feature set.
 
+The plot layout and text clipping issues were fixed in the plotting code. The regenerated PNG files in `results/plots/` were visually checked for clipped labels, crowded subplots, and cut-off legends.
+
 Outlier/distribution note:
 
 - The feature distribution plots are used for a basic check of unusual sensor values.
@@ -137,6 +139,21 @@ Tuned models:
 Validation results are saved in:
 
 - `results/metrics_table.csv`
+
+Full validation trial history is saved in:
+
+- `results/hyperparameter_trials.csv`
+- `docs/MODEL_TUNING_SUMMARY.md`
+
+Validation trial counts:
+
+- Logistic Regression: 1
+- Decision Tree: 18
+- Random Forest: 8
+- Extra Trees: 1
+- HistGradientBoostingClassifier: 8
+
+`results/metrics_table.csv` keeps the best validation result per model. `models/final_model.joblib` saves only the final selected model object, not every candidate model.
 
 ## Final Selected Model
 
@@ -226,7 +243,7 @@ python -m compileall -q src demo
 - `src/preprocessing.py`: clear preprocessing flow for column cleaning, ID removal, and processed CSV output.
 - `src/eda.py`: creates all expected EDA plots and summaries.
 - `src/modeling.py`: clearly defines the five model specifications, preprocessing pipeline, tuning grids, and validation selection logic.
-- `src/train.py`: trains, tunes, selects the model by validation F1-score, and saves the final model package.
+- `src/train.py`: trains, tunes, saves the validation trial history, selects the model by validation F1-score, and saves the final model package.
 - `src/evaluate.py`: loads the saved final model and evaluates it on the held-out test split.
 - `src/utils.py`: contains shared split, metric, leakage validation, and confusion matrix helpers.
 

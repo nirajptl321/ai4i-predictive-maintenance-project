@@ -13,20 +13,24 @@
 - [x] Run `python demo/demo.py`.
 - [x] Confirm `models/final_model.joblib` exists.
 - [x] Confirm `results/metrics_table.csv` exists.
+- [x] Confirm `results/hyperparameter_trials.csv` exists.
 - [x] Confirm `results/test_metrics.csv` exists.
 - [x] Confirm required plots exist in `results/plots/`.
+- [x] Confirm regenerated plot files in `results/plots/` were visually checked for clipping/readability.
 - [x] Confirm `results/full_reproducibility_run.txt` exists.
 - [x] Confirm `results/demo_output.txt` exists.
 - [x] Run `git diff --check`.
 - [x] Create `docs/comprehensive_project_review.md`.
+- [x] Create `docs/MODEL_TUNING_SUMMARY.md`.
 - [x] Finalize team names and contribution wording.
 - [x] Complete course-content audit against the official guideline and lecture/tutorial materials.
 - [x] Create `docs/COURSE_CONTENT_AUDIT.md`.
 - [x] Create `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`.
 - [x] Add dataset license and citation notes for the AI4I dataset.
-- [x] Regenerate `report/final_report.pdf` after the latest final report Markdown edit.
 - [x] Verify `report/final_report.pdf` exists and `pdfinfo report/final_report.pdf` works.
+- [x] Confirm `report/final_report.docx` exists as the final Word report.
 - [ ] Visually inspect `report/final_report.pdf` before submission.
+- [ ] Regenerate exported PDF/DOCX files if current or later Markdown edits must be reflected exactly in the submitted report files.
 - [ ] Create final Moodle ZIP.
 - [ ] Review final report for course-specific formatting requirements.
 - [ ] Confirm external tools and AI-assistance disclosure follows the course policy.

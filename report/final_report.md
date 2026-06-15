@@ -64,6 +64,8 @@ Feature engineering and representation are intentionally simple. The project per
 
 Feature distribution plots and target-vs-feature boxplots provide visual outlier review. No rows are removed as outliers because the values represent operating conditions in the synthetic dataset and may be meaningful for failure prediction.
 
+The generated plot files were updated from the plotting code to avoid clipped text, crowded labels, and cut-off legends.
+
 ## 6. Methodology and Models
 
 The project trains exactly five models:
@@ -94,7 +96,7 @@ Tuning grids:
 - Random Forest: `n_estimators`, `max_depth`, `min_samples_leaf`
 - HistGradientBoostingClassifier: `learning_rate`, `max_iter`, `max_leaf_nodes`
 
-All candidate hyperparameter combinations are evaluated on the validation set. The full trial history is saved in `results/hyperparameter_trials.csv`, while this report shows only the best validation result per model to keep the comparison table readable. The final model is selected by validation F1-score, and the test set is used only once for final held-out evaluation.
+All candidate hyperparameter combinations are evaluated on the validation set. The full 36-trial history is saved in `results/hyperparameter_trials.csv`, while this report shows only the best validation result per model to keep the comparison table readable. The final model is selected by validation F1-score, and the test set is used only once for final held-out evaluation.
 
 ## 8. Experimental Setup
 
@@ -106,7 +108,7 @@ The authoritative scripts are:
 - `python -m src.evaluate`
 - `python demo/demo.py`
 
-The final model is saved to `models/final_model.joblib`. Best validation metrics by model are saved to `results/metrics_table.csv`, all validation hyperparameter trials are saved to `results/hyperparameter_trials.csv`, and final test metrics are saved to `results/test_metrics.csv`.
+The final selected model is saved to `models/final_model.joblib`. Candidate model objects are not saved. Best validation metrics by model are saved to `results/metrics_table.csv`, all validation hyperparameter trials are saved to `results/hyperparameter_trials.csv`, and final test metrics are saved to `results/test_metrics.csv`.
 
 ## 9. Results and Model Comparison
 
@@ -164,11 +166,11 @@ Overall, this project shows a clear binary classification workflow for machine f
 
 ## 14. Team Contributions
 
-- Niraj Patel — coordinated the repository, integrated the main workflow, organized the dataset pipeline, implemented the preprocessing/training/evaluation scripts, prepared the demo, and assembled the documentation and reproducibility checks.
-- Samuel Lavallée — supported dataset review and helped check the feature/target definitions.
-- Thinoushan Senathirajah — supported EDA review and helped check plots and class balance observations.
-- Omar Shrit — supported model result review and helped check validation/test metric interpretation.
-- Arnav Singh — supported final report review, demo instructions, and submission checklist review.
+- Niraj Patel — Coordinated the repository, integrated the main workflow, organized the dataset pipeline, implemented the preprocessing/training/evaluation scripts, prepared the demo, and assembled the documentation and reproducibility checks.
+- Samuel Lavallée — Reviewed the dataset source, target definition, approved model inputs, and leakage-column exclusion.
+- Thinoushan Senathirajah — Reviewed the EDA outputs, class balance discussion, generated plots, and feature-distribution observations.
+- Omar Shrit — Reviewed the model comparison results, validation/test metrics, confusion matrix interpretation, and final model discussion.
+- Arnav Singh — Reviewed the final report structure, demo instructions, submission checklist, and final packaging requirements.
 
 ## 15. References
 

@@ -29,24 +29,25 @@ The PDF is the COEN 330 Applied Machine Learning Summer 2026 project guideline. 
 | Train/validation/test split | Complete | `src/utils.py`, `README.md`, `report/final_report.md` | Stratified 70/15/15 split with `random_state=42`. |
 | Five models | Complete | `src/modeling.py`, `results/metrics_table.csv`, `README.md` | Logistic Regression, Decision Tree, Random Forest, Extra Trees, HistGradientBoostingClassifier. |
 | Baseline model | Complete | `src/modeling.py`, `README.md`, `report/final_report.md` | Logistic Regression is the simple baseline. |
-| Hyperparameter tuning for at least three models | Complete | `src/modeling.py`, `README.md`, `results/metrics_table.csv` | Decision Tree, Random Forest, and HistGradientBoostingClassifier are tuned. |
-| Validation / model selection | Complete | `src/train.py`, `src/modeling.py`, `results/metrics_table.csv` | Final model is selected by validation F1-score. |
+| Hyperparameter tuning for at least three models | Complete | `src/modeling.py`, `README.md`, `results/hyperparameter_trials.csv`, `docs/MODEL_TUNING_SUMMARY.md` | Decision Tree, Random Forest, and HistGradientBoostingClassifier are tuned. The full history has 36 validation trials. |
+| Validation / model selection | Complete | `src/train.py`, `src/modeling.py`, `results/metrics_table.csv` | Final model is selected by validation F1-score. `results/metrics_table.csv` keeps the best validation result per model. |
 | Final test evaluation | Complete | `src/evaluate.py`, `results/test_metrics.csv`, `report/final_report.md` | Test set is used for final evaluation after model selection. |
 | Appropriate metrics | Complete | `src/utils.py`, `results/test_metrics.csv`, `README.md` | Accuracy, precision, recall, F1-score, F2-score, ROC-AUC, and confusion matrix are reported. |
 | Model comparison | Complete | `results/metrics_table.csv`, `results/plots/model_comparison.png`, `report/final_report.md` | Validation comparison table and plot are available. |
 | Error analysis | Complete | `report/final_report.md`, `README.md` | Explains false positives, false negatives, missed failures, and recall tradeoff. |
 | Limitations | Complete | `README.md`, `report/final_report.md` | Notes synthetic data, rare failure class, no threshold tuning, and no production deployment. |
-| Reproducibility | Complete | `README.md`, `requirements.txt`, `results/full_reproducibility_run.txt`, `src/` | Commands and dependency file are provided. |
+| Reproducibility | Complete | `README.md`, `requirements.txt`, `results/full_reproducibility_run.txt`, `results/hyperparameter_trials.csv`, `src/` | Commands, dependency file, run log, and full tuning history are provided. |
 | Demo | Complete | `demo/demo.py`, `demo/README.md`, `results/demo_output.txt` | Local command-line demo loads the trained model and predicts on sample rows. |
 | Notebooks or scripts | Complete | `notebooks/`, `src/` | Notebooks are walkthroughs; `src/` is the authoritative pipeline. |
-| Saved model / results / figures | Complete | `models/final_model.joblib`, `results/`, `results/plots/` | Final model, metrics, logs, and plots are present. |
-| Final report structure | Complete | `report/final_report.md`, `report/final_report_draft.md` | All 15 required sections are present. |
+| Saved model / results / figures | Complete | `models/final_model.joblib`, `results/`, `results/plots/` | Final model, metrics, logs, full tuning history, and clean regenerated plots are present. Only the final selected model object is saved. |
+| Final report structure | Complete | `report/final_report.md`, `report/final_report_draft.md`, `report/final_report.pdf`, `report/final_report.docx` | All 15 required sections are present, and exported PDF/Word report files exist. |
 | Team contribution section | Complete | `report/final_report.md`, `report/final_report_draft.md` | Team names and contribution wording are finalized. |
 | References | Complete | `report/final_report.md`, `report/final_report_draft.md` | Includes UCI, scikit-learn, and pandas references. |
 | Academic integrity / external tools acknowledgment | Complete | `README.md`, `report/final_report.md` | External libraries and tool-supported support are acknowledged. |
 | Final submission checklist | Complete | `docs/final_submission_checklist.md` | Checklist exists and includes remaining manual tasks. |
 | Course-content audit | Complete | `docs/COURSE_CONTENT_AUDIT.md`, `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md` | Project was checked against the official guideline and lecture/tutorial concepts. |
-| Final report PDF | Partial | `report/final_report.pdf`, `docs/final_submission_checklist.md` | PDF exists, but it should be regenerated after any final report Markdown edit and visually inspected before submission. |
+| Final report PDF | Partial | `report/final_report.pdf`, `docs/final_submission_checklist.md` | PDF exists. It still needs final human visual inspection before submission. |
+| Final report Word document | Complete | `report/final_report.docx`, `docs/final_submission_checklist.md` | Word report exists as the final DOCX report with clean figures. |
 | Moodle ZIP packaging | Partial | `docs/final_submission_checklist.md` | Final ZIP must still be created manually before Moodle submission. |
 
 ## Report Structure Check
@@ -95,10 +96,9 @@ The project satisfies the main COEN 330 technical and documentation requirements
 
 ## Remaining TODOs
 
-- Team contribution names have been filled in; do a final human review before submission.
 - Review `docs/COURSE_CONTENT_AUDIT.md` and `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md` before final packaging.
-- Regenerate `report/final_report.pdf` if `report/final_report.md` changes again.
 - Visually inspect `report/final_report.pdf` before submission.
+- Regenerate exported PDF/DOCX files if current or later Markdown edits must be reflected exactly in the submitted report files.
 - Create the final Moodle ZIP.
 - Confirm the external tools and AI-assistance disclosure wording matches the instructor's policy.
 - Optionally add a demo screenshot or short video if the team wants to follow the guideline recommendation.

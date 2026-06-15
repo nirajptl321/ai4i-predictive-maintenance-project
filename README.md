@@ -88,7 +88,7 @@ The tuned models used small grids so the project would run quickly:
 
 `class_weight="balanced"` is used for Logistic Regression, Decision Tree, Random Forest, and Extra Trees.
 
-The full tuning history is saved for reproducibility. The ranked best validation result per model is saved in `results/metrics_table.csv`, and every validation trial for every tested hyperparameter combination is saved in `results/hyperparameter_trials.csv`. The tuning process is summarized in `docs/MODEL_TUNING_SUMMARY.md`.
+The full tuning history is saved for reproducibility. The ranked best validation result per model is saved in `results/metrics_table.csv`, and all 36 validation trials are saved in `results/hyperparameter_trials.csv`. The tuning process is summarized in `docs/MODEL_TUNING_SUMMARY.md`. Only the final selected model object is saved in `models/final_model.joblib`.
 
 ## Results
 
@@ -162,6 +162,9 @@ This is only a local course-project demo. It is not a deployment-ready maintenan
 - Reports: `report/`
 - Results and plots: `results/`
 - Final model: `models/final_model.joblib`
+- Final report source: `report/final_report.md`
+- Final PDF report: `report/final_report.pdf`
+- Final Word report: `report/final_report.docx`
 - Technical review: `docs/TECHNICAL_REVIEW.md`
 - Course content audit: `docs/COURSE_CONTENT_AUDIT.md`
 - Guideline/course compliance review: `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`
@@ -188,6 +191,10 @@ The notebooks are walkthroughs for reading and presenting the work. The reproduc
 - `results/plots/feature_importance.png`
 - `results/plots/failure_mode_counts.png`
 - `results/plots/target_vs_features.png`
+- `report/final_report.pdf`
+- `report/final_report.docx`
+
+The plot files in `results/plots/` are generated from the plotting code. Text clipping and layout issues were fixed at the source, and the regenerated PNGs were visually checked.
 
 ## Limitations
 

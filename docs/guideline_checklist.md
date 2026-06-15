@@ -15,12 +15,17 @@
 - [x] Test set is used only for final evaluation.
 - [x] Five required models are trained.
 - [x] Required tuned models are tuned with small grids.
+- [x] Full hyperparameter trial history is saved in `results/hyperparameter_trials.csv`.
+- [x] Model tuning grids and trial counts are documented in `docs/MODEL_TUNING_SUMMARY.md`.
 - [x] Class imbalance handling is used where supported.
 - [x] Required metrics are reported.
 - [x] Required plots are generated.
+- [x] Plot clipping/layout issues were fixed at the source and regenerated plots were visually checked.
 - [x] Demo script is included.
 - [x] README includes installation and run instructions.
 - [x] Report includes all required COEN 330 sections.
 - [x] Reproducibility run log is generated.
 - [x] Team member names are finalized.
 - [x] Course-content audit is documented.
+- [x] Final PDF report exists.
+- [x] Final Word report exists.

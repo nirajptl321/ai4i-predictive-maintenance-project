@@ -10,6 +10,7 @@ This review checks the project against the official COEN 330 project guideline a
 - Course materials: `docs/course_materials/`
 - Course concept summary: `docs/COURSE_CONTENT_AUDIT.md`
 - Technical project review: `docs/TECHNICAL_REVIEW.md`
+- Model tuning summary: `docs/MODEL_TUNING_SUMMARY.md`
 
 ## Compliance Table
 
@@ -31,11 +32,11 @@ This review checks the project against the official COEN 330 project guideline a
 | Train/validation/test split | Complete | `src/utils.py`, `README.md`, `docs/TECHNICAL_REVIEW.md` | Stratified 70/15/15 split is used. | None |
 | Random seed | Complete | `src/config.py`, `src/utils.py`, `src/modeling.py` | `RANDOM_STATE = 42` is used where relevant. | None |
 | Leakage prevention | Complete | `src/config.py`, `src/utils.py`, `src/eda.py`, `docs/TECHNICAL_REVIEW.md` | `twf`, `hdf`, `pwf`, `osf`, and `rnf` are not model features. | None |
-| EDA plots and observations | Complete | `src/eda.py`, `results/plots/`, `results/missing_values_summary.csv` | Class balance, missing values, distributions, correlation, target-vs-feature, and failure modes are covered. | None |
+| EDA plots and observations | Complete | `src/eda.py`, `results/plots/`, `results/missing_values_summary.csv` | Class balance, missing values, distributions, correlation, target-vs-feature, and failure modes are covered. Plot layout and clipping were fixed at the source and visually checked. | None |
 | At least five models | Complete | `src/modeling.py`, `results/metrics_table.csv`, `README.md` | Exactly five required models are trained. | None |
 | Baseline model | Complete | `src/modeling.py`, `README.md` | Logistic Regression is the simple baseline. | None |
-| Hyperparameter tuning for at least three models | Complete | `src/modeling.py`, `results/metrics_table.csv`, `README.md` | Decision Tree, Random Forest, and HistGradientBoostingClassifier are tuned. | None |
-| Model selection using validation, not test | Complete | `src/train.py`, `src/modeling.py`, `results/metrics_table.csv` | Final model is selected by validation F1-score. The test split is not used during selection. | None |
+| Hyperparameter tuning for at least three models | Complete | `src/modeling.py`, `results/hyperparameter_trials.csv`, `docs/MODEL_TUNING_SUMMARY.md`, `README.md` | Decision Tree, Random Forest, and HistGradientBoostingClassifier are tuned. The full history has 36 validation trials. | None |
+| Model selection using validation, not test | Complete | `src/train.py`, `src/modeling.py`, `results/metrics_table.csv` | Final model is selected by validation F1-score. The test split is not used during selection. `results/metrics_table.csv` contains the best validation result per model. | None |
 | Final test evaluation | Complete | `src/evaluate.py`, `results/test_metrics.csv` | Saved final model is evaluated once on the held-out test split. | None |
 | Appropriate metrics | Complete | `src/utils.py`, `results/test_metrics.csv`, `README.md` | Accuracy, precision, recall, F1-score, F2-score, ROC-AUC, and confusion matrix are reported. | None |
 | Model comparison table | Complete | `results/metrics_table.csv`, `results/plots/model_comparison.png` | Validation results compare all five models. | None |
@@ -43,10 +44,11 @@ This review checks the project against the official COEN 330 project guideline a
 | False positive / false negative discussion | Complete | `README.md`, `docs/TECHNICAL_REVIEW.md`, `report/final_report.md` | Explains 5 false alarms and 17 missed failures. | None |
 | Feature importance / interpretation | Complete | `src/evaluate.py`, `results/plots/feature_importance.png`, `docs/TECHNICAL_REVIEW.md` | Feature importance is generated when available for the final model pipeline. | None |
 | Limitations | Complete | `README.md`, `docs/TECHNICAL_REVIEW.md`, `report/final_report.md` | Notes synthetic data, rare failures, no threshold tuning, and no production deployment. | None |
-| Reproducibility | Complete | `README.md`, `requirements.txt`, `results/full_reproducibility_run.txt`, `src/` | Commands and saved run output are present. | None |
+| Reproducibility | Complete | `README.md`, `requirements.txt`, `results/full_reproducibility_run.txt`, `results/hyperparameter_trials.csv`, `src/` | Commands, saved run output, and full tuning history are present. | None |
 | Demo | Complete | `demo/demo.py`, `demo/README.md` | Demo loads the saved model and shows sample predictions. | None |
 | Notebooks or scripts | Complete | `notebooks/`, `src/` | Notebooks are walkthroughs; `src/` is the reproducible pipeline. | None |
 | Final report sections | Complete | `report/final_report.md`, `report/final_report_draft.md` | All required report sections are present. | None for this technical audit |
+| Final report exports | Complete | `report/final_report.pdf`, `report/final_report.docx` | Final PDF and Word report files are present. | Final human review before submission |
 | Team contribution statement | Complete | `report/final_report.md`, `report/final_report_draft.md` | Team names and factual contribution wording are present. | None |
 | References | Complete | `report/final_report.md`, `report/final_report_draft.md` | UCI, scikit-learn, and pandas references are included. | None |
 | Academic integrity / external tools acknowledgment | Complete | `README.md`, `report/final_report.md` | tool-supported support and Python libraries are disclosed. | None |
@@ -106,5 +108,6 @@ Project status: ready from a technical machine learning standpoint, and almost r
 The remaining items are manual submission tasks, not missing model work:
 
 - Visually inspect the final PDF before submission.
+- Review the final Word report before submission.
 - Create the final Moodle ZIP.
 - Confirm the instructor's exact expectation for AI-tool disclosure wording.
