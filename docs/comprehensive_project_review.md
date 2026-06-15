@@ -96,5 +96,5 @@ The project satisfies the main COEN 330 technical and documentation requirements
 
 ## Remaining TODOs
 
-- Confirm the external tools and AI-assistance disclosure wording matches the instructor's policy.
+- Confirm the external tool disclosure wording matches the instructor's policy.
 - Optionally add a demo screenshot or short video if the team wants to follow the guideline recommendation.

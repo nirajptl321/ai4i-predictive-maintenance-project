@@ -32,9 +32,9 @@
 - [x] Visually inspect `report/final_report.pdf` before submission.
 - [x] Confirm final exported PDF/DOCX report files are ready for submission.
 - [x] Create final Moodle ZIP: `AI4I_Predictive_Maintenance_Project_Final.zip`.
-- [x] Confirm final Moodle ZIP includes the needed project files and excludes local-only files such as `.git/`, `.venv/`, caches, `.agents/`, `.codex/`, and `docs/course_materials/`.
+- [x] Confirm final Moodle ZIP includes the needed project files and excludes local-only files such as `.git/`, `.venv/`, caches, local tool folders, and `docs/course_materials/`.
 - [x] Review final report for course-specific formatting requirements.
-- [ ] Confirm external tools and AI-assistance disclosure follows the course policy.
+- [ ] Confirm external tool disclosure follows the course policy.
 
 PDF regeneration method used when `report/final_report.md` changes:
 
