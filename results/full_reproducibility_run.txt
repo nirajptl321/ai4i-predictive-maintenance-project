@@ -10,6 +10,7 @@ Missing values summary saved to: /home/niraj/Documents/AI4I_Predictive_Maintenan
 
 $ python -m src.train
 Validation metrics saved to: /home/niraj/Documents/AI4I_Predictive_Maintenance_Project/results/metrics_table.csv
+Hyperparameter trials saved to: /home/niraj/Documents/AI4I_Predictive_Maintenance_Project/results/hyperparameter_trials.csv
 Model comparison plot saved to: /home/niraj/Documents/AI4I_Predictive_Maintenance_Project/results/plots/model_comparison.png
 Selected model: HistGradientBoostingClassifier
 Best parameters: {'learning_rate': 0.05, 'max_iter': 100, 'max_leaf_nodes': 31}

@@ -127,11 +127,12 @@ def train_and_validate_models(
 
     for spec in model_specs().values():
         param_grid = list(ParameterGrid(spec.param_grid or {}))
+        trial_records = []
         best_metrics: dict[str, float] | None = None
         best_params: dict | None = None
         best_pipeline: Pipeline | None = None
 
-        for params in param_grid:
+        for trial_number, params in enumerate(param_grid, start=1):
             estimator = clone(spec.estimator).set_params(**params)
             pipeline = make_pipeline(estimator)
             pipeline.fit(X_train, y_train)
@@ -139,6 +140,16 @@ def train_and_validate_models(
             y_pred = pipeline.predict(X_validation)
             y_probability = positive_class_probability(pipeline, X_validation)
             metrics = classification_metrics(y_validation, y_pred, y_probability)
+            trial_records.append(
+                {
+                    "model": spec.name,
+                    "trial_number": trial_number,
+                    "split": "validation",
+                    "tuned": bool(spec.param_grid),
+                    "params": json.dumps(params, sort_keys=True),
+                    **metrics,
+                }
+            )
 
             if _is_better(metrics, best_metrics):
                 best_metrics = metrics
@@ -161,6 +172,7 @@ def train_and_validate_models(
             "pipeline": best_pipeline,
             "best_params": best_params,
             "validation_metrics": best_metrics,
+            "validation_trials": trial_records,
             "tuned": bool(spec.param_grid),
         }
 
@@ -189,4 +201,3 @@ def fit_final_model(
     pipeline = make_pipeline(estimator)
     pipeline.fit(X_train_validation, y_train_validation)
     return pipeline
-

@@ -94,6 +94,8 @@ Tuning grids:
 - Random Forest: `n_estimators`, `max_depth`, `min_samples_leaf`
 - HistGradientBoostingClassifier: `learning_rate`, `max_iter`, `max_leaf_nodes`
 
+All candidate hyperparameter combinations are evaluated on the validation set. The full trial history is saved in `results/hyperparameter_trials.csv`, while this report shows only the best validation result per model to keep the comparison table readable. The final model is selected by validation F1-score, and the test set is used only once for final held-out evaluation.
+
 ## 8. Experimental Setup
 
 The authoritative scripts are:
@@ -104,7 +106,7 @@ The authoritative scripts are:
 - `python -m src.evaluate`
 - `python demo/demo.py`
 
-The final model is saved to `models/final_model.joblib`. Validation metrics are saved to `results/metrics_table.csv`, and final test metrics are saved to `results/test_metrics.csv`.
+The final model is saved to `models/final_model.joblib`. Best validation metrics by model are saved to `results/metrics_table.csv`, all validation hyperparameter trials are saved to `results/hyperparameter_trials.csv`, and final test metrics are saved to `results/test_metrics.csv`.
 
 ## 9. Results and Model Comparison
 

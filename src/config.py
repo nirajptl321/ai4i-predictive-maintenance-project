@@ -16,6 +16,7 @@ FINAL_MODEL_PATH = MODELS_DIR / "final_model.joblib"
 RESULTS_DIR = ROOT_DIR / "results"
 PLOTS_DIR = RESULTS_DIR / "plots"
 METRICS_TABLE_PATH = RESULTS_DIR / "metrics_table.csv"
+HYPERPARAMETER_TRIALS_PATH = RESULTS_DIR / "hyperparameter_trials.csv"
 TEST_METRICS_PATH = RESULTS_DIR / "test_metrics.csv"
 FULL_RUN_LOG_PATH = RESULTS_DIR / "full_reproducibility_run.txt"
 DEMO_OUTPUT_PATH = RESULTS_DIR / "demo_output.txt"
@@ -53,4 +54,3 @@ MODEL_NAMES = [
     "Extra Trees",
     "HistGradientBoostingClassifier",
 ]
-

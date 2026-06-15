@@ -88,6 +88,8 @@ The tuned models used small grids so the project would run quickly:
 
 `class_weight="balanced"` is used for Logistic Regression, Decision Tree, Random Forest, and Extra Trees.
 
+The full tuning history is saved for reproducibility. The ranked best validation result per model is saved in `results/metrics_table.csv`, and every validation trial for every tested hyperparameter combination is saved in `results/hyperparameter_trials.csv`. The tuning process is summarized in `docs/MODEL_TUNING_SUMMARY.md`.
+
 ## Results
 
 Selected model:
@@ -106,7 +108,7 @@ Test metrics:
 
 The model caught 34 failure cases and missed 17 failure cases in the test set. It also produced 5 false alarms. Accuracy is high, but recall is important because missed failures are costly.
 
-Full validation results are in `results/metrics_table.csv`. Final test results are in `results/test_metrics.csv`.
+Best validation results by model are in `results/metrics_table.csv`. The complete validation tuning history is in `results/hyperparameter_trials.csv`. Final test results are in `results/test_metrics.csv`.
 
 ## How To Run
 
@@ -163,6 +165,7 @@ This is only a local course-project demo. It is not a deployment-ready maintenan
 - Technical review: `docs/TECHNICAL_REVIEW.md`
 - Course content audit: `docs/COURSE_CONTENT_AUDIT.md`
 - Guideline/course compliance review: `docs/GUIDELINE_AND_COURSE_COMPLIANCE_REVIEW.md`
+- Model tuning summary: `docs/MODEL_TUNING_SUMMARY.md`
 - Repository structure guide: `docs/REPOSITORY_STRUCTURE.md`
 
 The notebooks are walkthroughs for reading and presenting the work. The reproducible pipeline is in `src/`.
@@ -172,6 +175,7 @@ The notebooks are walkthroughs for reading and presenting the work. The reproduc
 - `data/processed/ai4i_processed.csv`
 - `models/final_model.joblib`
 - `results/metrics_table.csv`
+- `results/hyperparameter_trials.csv`
 - `results/test_metrics.csv`
 - `results/missing_values_summary.csv`
 - `results/full_reproducibility_run.txt`

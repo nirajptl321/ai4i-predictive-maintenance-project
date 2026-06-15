@@ -21,6 +21,7 @@ from sklearn.model_selection import train_test_split
 from src.config import (
     FEATURE_COLUMNS,
     FINAL_MODEL_PATH,
+    HYPERPARAMETER_TRIALS_PATH,
     LEAKAGE_COLUMNS,
     METRICS_TABLE_PATH,
     MISSING_VALUES_PATH,
@@ -43,6 +44,7 @@ def ensure_directories() -> None:
         PLOTS_DIR,
         FINAL_MODEL_PATH.parent,
         METRICS_TABLE_PATH.parent,
+        HYPERPARAMETER_TRIALS_PATH.parent,
         TEST_METRICS_PATH.parent,
         MISSING_VALUES_PATH.parent,
     ]:
@@ -133,4 +135,3 @@ def confusion_matrix_values(y_true: pd.Series | np.ndarray, y_pred: np.ndarray) 
 def metrics_to_text(metrics: dict[str, float]) -> str:
     """Format metric values for terminal output."""
     return "\n".join(f"{name}: {value:.4f}" for name, value in metrics.items())
-

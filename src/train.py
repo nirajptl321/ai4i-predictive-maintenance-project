@@ -19,6 +19,7 @@ import seaborn as sns
 from src.config import (
     FEATURE_COLUMNS,
     FINAL_MODEL_PATH,
+    HYPERPARAMETER_TRIALS_PATH,
     LEAKAGE_COLUMNS,
     METRICS_TABLE_PATH,
     PLOTS_DIR,
@@ -59,7 +60,14 @@ def main() -> None:
         X_validation,
         y_validation,
     )
+    trial_records = [
+        trial
+        for model_result in selected_models.values()
+        for trial in model_result["validation_trials"]
+    ]
+    trial_df = pd.DataFrame(trial_records)
     metrics_df.to_csv(METRICS_TABLE_PATH, index=False)
+    trial_df.to_csv(HYPERPARAMETER_TRIALS_PATH, index=False)
     save_model_comparison_plot(metrics_df)
 
     best_params = selected_models[best_model_name]["best_params"]
@@ -82,6 +90,7 @@ def main() -> None:
     joblib.dump(package, FINAL_MODEL_PATH)
 
     print(f"Validation metrics saved to: {METRICS_TABLE_PATH}")
+    print(f"Hyperparameter trials saved to: {HYPERPARAMETER_TRIALS_PATH}")
     print(f"Model comparison plot saved to: {PLOTS_DIR / 'model_comparison.png'}")
     print(f"Selected model: {best_model_name}")
     print(f"Best parameters: {best_params}")
