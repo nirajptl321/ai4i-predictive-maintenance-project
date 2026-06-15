@@ -32,19 +32,22 @@ from src.utils import ensure_directories, make_train_validation_test_split
 
 sns.set_theme(style="whitegrid")
 
+SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
+
 
 def save_model_comparison_plot(metrics_df: pd.DataFrame) -> None:
     plot_df = metrics_df.sort_values("f1_score", ascending=True)
-    fig, ax = plt.subplots(figsize=(8, 5))
+    # Extra width and left margin prevent long model names from being cut off in the report.
+    fig, ax = plt.subplots(figsize=(11, 6))
     ax.barh(plot_df["model"], plot_df["f1_score"], color="#4C78A8", label="F1-score")
     ax.scatter(plot_df["recall"], plot_df["model"], color="#F58518", label="Recall", zorder=3)
     ax.scatter(plot_df["f2_score"], plot_df["model"], color="#54A24B", label="F2-score", zorder=3)
     ax.set_xlim(0, 1)
     ax.set_xlabel("Validation score")
     ax.set_title("Model Comparison on Validation Set")
-    ax.legend(loc="lower right")
-    fig.tight_layout()
-    fig.savefig(PLOTS_DIR / "model_comparison.png", dpi=180)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=3)
+    fig.subplots_adjust(left=0.34, bottom=0.2, right=0.97, top=0.9)
+    fig.savefig(PLOTS_DIR / "model_comparison.png", **SAVEFIG_KWARGS)
     plt.close(fig)
 
 

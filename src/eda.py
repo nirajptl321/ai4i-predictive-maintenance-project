@@ -13,6 +13,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from matplotlib.patches import Patch
 
 from src.config import (
     LEAKAGE_COLUMNS,
@@ -27,19 +28,24 @@ from src.utils import ensure_directories
 
 sns.set_theme(style="whitegrid")
 
+SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
+FAILURE_PALETTE = {0: "#4C78A8", 1: "#F58518"}
+
 
 def save_class_balance_plot(df: pd.DataFrame) -> None:
     counts = df[TARGET_COLUMN].value_counts().sort_index()
-    fig, ax = plt.subplots(figsize=(6, 4))
+    fig, ax = plt.subplots(figsize=(7, 4.8))
     sns.barplot(x=counts.index.astype(str), y=counts.values, ax=ax, color="#4C78A8")
     total = counts.sum()
+    # Give the count labels room so the majority-class annotation does not hit the title.
+    ax.set_ylim(0, counts.max() * 1.16)
     for index, value in enumerate(counts.values):
         ax.text(index, value, f"{value:,}\n{value / total:.1%}", ha="center", va="bottom")
     ax.set_title("Machine Failure Class Balance")
     ax.set_xlabel("Machine failure")
     ax.set_ylabel("Count")
     fig.tight_layout()
-    fig.savefig(PLOTS_DIR / "class_balance.png", dpi=180)
+    fig.savefig(PLOTS_DIR / "class_balance.png", **SAVEFIG_KWARGS)
     plt.close(fig)
 
 
@@ -55,36 +61,65 @@ def save_missing_values_summary(df: pd.DataFrame) -> None:
 
 
 def save_feature_distribution_plots(df: pd.DataFrame) -> None:
-    fig, axes = plt.subplots(2, 3, figsize=(14, 8))
+    fig, axes = plt.subplots(2, 3, figsize=(17, 9.5))
     axes = axes.flatten()
 
     for ax, column in zip(axes, NUMERIC_FEATURE_COLUMNS):
-        sns.histplot(data=df, x=column, hue=TARGET_COLUMN, bins=35, element="step", ax=ax)
+        sns.histplot(
+            data=df,
+            x=column,
+            hue=TARGET_COLUMN,
+            bins=35,
+            element="step",
+            palette=FAILURE_PALETTE,
+            legend=False,
+            ax=ax,
+        )
         ax.set_title(column.replace("_", " ").title())
         ax.set_xlabel("")
 
-    sns.countplot(data=df, x=TYPE_COLUMN, hue=TARGET_COLUMN, ax=axes[-1])
+    sns.countplot(data=df, x=TYPE_COLUMN, hue=TARGET_COLUMN, palette=FAILURE_PALETTE, legend=False, ax=axes[-1])
     axes[-1].set_title("Type")
     axes[-1].set_xlabel("")
-    fig.suptitle("Feature Distributions by Machine Failure Target", y=1.02)
-    fig.tight_layout()
-    fig.savefig(PLOTS_DIR / "feature_distributions.png", dpi=180, bbox_inches="tight")
+    legend_handles = [
+        Patch(facecolor=FAILURE_PALETTE[0], edgecolor=FAILURE_PALETTE[0], label="0"),
+        Patch(facecolor=FAILURE_PALETTE[1], edgecolor=FAILURE_PALETTE[1], label="1"),
+    ]
+    # A shared legend keeps the small subplots from covering the distributions.
+    fig.legend(handles=legend_handles, title=TARGET_COLUMN, loc="lower center", ncol=2)
+    fig.suptitle("Feature Distributions by Machine Failure Target", y=0.98)
+    fig.tight_layout(rect=[0, 0.08, 1, 0.95])
+    fig.savefig(PLOTS_DIR / "feature_distributions.png", **SAVEFIG_KWARGS)
     plt.close(fig)
 
 
 def save_correlation_heatmap(df: pd.DataFrame) -> None:
     columns = NUMERIC_FEATURE_COLUMNS + [TARGET_COLUMN]
     corr = df[columns].corr(numeric_only=True)
-    fig, ax = plt.subplots(figsize=(8, 6))
-    sns.heatmap(corr, annot=True, cmap="coolwarm", center=0, fmt=".2f", linewidths=0.5, ax=ax)
+    fig, ax = plt.subplots(figsize=(10, 7.5))
+    sns.heatmap(
+        corr,
+        annot=True,
+        annot_kws={"size": 10},
+        cmap="coolwarm",
+        center=0,
+        fmt=".2f",
+        linewidths=0.5,
+        cbar_kws={"shrink": 0.85},
+        ax=ax,
+    )
     ax.set_title("Correlation Heatmap: Model Features and Target")
+    ax.tick_params(axis="x", labelrotation=45)
+    for label in ax.get_xticklabels():
+        label.set_horizontalalignment("right")
+    ax.tick_params(axis="y", labelrotation=0)
     fig.tight_layout()
-    fig.savefig(PLOTS_DIR / "correlation_heatmap.png", dpi=180)
+    fig.savefig(PLOTS_DIR / "correlation_heatmap.png", **SAVEFIG_KWARGS)
     plt.close(fig)
 
 
 def save_target_vs_feature_plots(df: pd.DataFrame) -> None:
-    fig, axes = plt.subplots(2, 3, figsize=(14, 8))
+    fig, axes = plt.subplots(2, 3, figsize=(17, 9.5))
     axes = axes.flatten()
     for ax, column in zip(axes, NUMERIC_FEATURE_COLUMNS):
         sns.boxplot(data=df, x=TARGET_COLUMN, y=column, ax=ax)
@@ -97,9 +132,9 @@ def save_target_vs_feature_plots(df: pd.DataFrame) -> None:
     axes[-1].set_title("Failure Rate by Type")
     axes[-1].set_xlabel("Type")
     axes[-1].set_ylabel("Failure rate")
-    fig.suptitle("Target vs Important Input Features", y=1.02)
-    fig.tight_layout()
-    fig.savefig(PLOTS_DIR / "target_vs_features.png", dpi=180, bbox_inches="tight")
+    fig.suptitle("Target vs Important Input Features", y=0.98)
+    fig.tight_layout(rect=[0, 0, 1, 0.95])
+    fig.savefig(PLOTS_DIR / "target_vs_features.png", **SAVEFIG_KWARGS)
     plt.close(fig)
 
 
@@ -107,19 +142,21 @@ def save_failure_mode_count_plot(df: pd.DataFrame) -> None:
     available_modes = [column for column in LEAKAGE_COLUMNS if column in df.columns]
     counts = df[available_modes].sum().sort_values(ascending=False) if available_modes else pd.Series(dtype=int)
 
-    fig, ax = plt.subplots(figsize=(7, 4))
+    fig, ax = plt.subplots(figsize=(8, 4.8))
     if counts.empty:
         ax.text(0.5, 0.5, "No failure mode columns found", ha="center", va="center")
         ax.set_axis_off()
     else:
         sns.barplot(x=counts.index.str.upper(), y=counts.values, ax=ax, color="#54A24B")
+        # Extra headroom keeps bar labels clear when this image is inserted in documents.
+        ax.set_ylim(0, counts.max() * 1.18)
         for index, value in enumerate(counts.values):
             ax.text(index, value, f"{int(value):,}", ha="center", va="bottom")
         ax.set_title("Failure Mode Counts (Explanation Only)")
         ax.set_xlabel("Diagnostic failure mode")
         ax.set_ylabel("Count")
     fig.tight_layout()
-    fig.savefig(PLOTS_DIR / "failure_mode_counts.png", dpi=180)
+    fig.savefig(PLOTS_DIR / "failure_mode_counts.png", **SAVEFIG_KWARGS)
     plt.close(fig)
 
 

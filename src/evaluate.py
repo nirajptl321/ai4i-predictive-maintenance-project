@@ -30,18 +30,20 @@ from src.utils import (
 
 sns.set_theme(style="whitegrid")
 
+SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
+
 
 def save_confusion_matrix_plot(y_true: pd.Series, y_pred) -> None:
     matrix = confusion_matrix(y_true, y_pred, labels=[0, 1])
-    fig, ax = plt.subplots(figsize=(5, 4))
+    fig, ax = plt.subplots(figsize=(6, 5))
     display = ConfusionMatrixDisplay(
         confusion_matrix=matrix,
         display_labels=["No failure", "Failure"],
     )
     display.plot(values_format="d", cmap="Blues", ax=ax, colorbar=False)
-    ax.set_title("Test Confusion Matrix")
+    ax.set_title("Test Confusion Matrix", pad=12)
     fig.tight_layout()
-    fig.savefig(PLOTS_DIR / "confusion_matrix.png", dpi=180)
+    fig.savefig(PLOTS_DIR / "confusion_matrix.png", **SAVEFIG_KWARGS)
     plt.close(fig)
 
 
@@ -63,12 +65,15 @@ def save_feature_importance_plot(model, X_test: pd.DataFrame, y_test: pd.Series)
         }
     ).sort_values("importance", ascending=True)
 
-    fig, ax = plt.subplots(figsize=(8, 5))
+    # Wider canvas and explicit x-limit keep long labels and error bars visible.
+    fig, ax = plt.subplots(figsize=(10, 5.8))
     ax.barh(importance_df["feature"], importance_df["importance"], xerr=importance_df["std"], color="#4C78A8")
+    x_max = (importance_df["importance"] + importance_df["std"]).max()
+    ax.set_xlim(left=0, right=x_max * 1.08)
     ax.set_xlabel("Mean permutation importance using F1-score")
-    ax.set_title("Final Model Feature Importance")
-    fig.tight_layout()
-    fig.savefig(PLOTS_DIR / "feature_importance.png", dpi=180)
+    ax.set_title("Final Model Feature Importance", pad=12)
+    fig.subplots_adjust(left=0.28, bottom=0.18, right=0.97, top=0.9)
+    fig.savefig(PLOTS_DIR / "feature_importance.png", **SAVEFIG_KWARGS)
     plt.close(fig)
 
 
