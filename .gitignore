@@ -21,3 +21,4 @@ data/raw/*.zip
 # Local course lecture/tutorial materials
 # Kept locally for review, not committed to public GitHub
 docs/course_materials/
+PROJECT_LOG.md
