@@ -1,0 +1,13 @@
+row_index,model,type,air_temperature_k,process_temperature_k,rotational_speed_rpm,torque_nm,tool_wear_min,twf,hdf,pwf,osf,rnf,true_label,predicted_label,predicted_probability_failure,error_type
+4778,XGBoost,H,303.6,312.2,1371,54.6,112,0,1,0,0,0,1,0,0.7654271721839905,false_negative
+4851,XGBoost,L,303.7,312.1,1363,51.8,90,0,1,0,0,0,1,0,0.7601081728935242,false_negative
+2864,XGBoost,H,300.6,309.4,1380,47.6,246,1,0,0,0,0,1,0,0.7545742392539978,false_negative
+442,XGBoost,L,297.4,308.5,1399,61.5,61,0,0,1,0,0,1,0,0.7541822791099548,false_negative
+2502,XGBoost,L,299.2,309.0,1515,48.9,228,0,0,0,1,0,1,0,0.7370814681053162,false_negative
+8199,XGBoost,L,299.2,310.7,1737,27.0,225,1,0,0,0,0,1,0,0.7343761920928955,false_negative
+8690,XGBoost,L,297.1,308.5,1323,44.4,207,1,0,0,0,0,1,0,0.7009222507476807,false_negative
+7426,XGBoost,M,300.0,311.4,1692,29.0,216,1,0,0,0,0,1,0,0.6350190043449402,false_negative
+2941,XGBoost,M,300.7,309.6,1996,19.8,203,1,0,0,0,0,1,0,0.3220876455307007,false_negative
+1492,XGBoost,M,298.0,308.7,1479,58.5,176,0,0,1,0,0,1,0,0.19946525990962982,false_negative
+1996,XGBoost,M,298.4,308.0,1416,38.2,198,1,0,0,0,0,1,0,0.06868302077054977,false_negative
+9174,XGBoost,L,297.8,308.9,1871,25.6,200,1,0,0,0,0,1,0,0.05528207868337631,false_negative

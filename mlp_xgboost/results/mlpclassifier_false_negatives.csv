@@ -1,0 +1,12 @@
+row_index,model,type,air_temperature_k,process_temperature_k,rotational_speed_rpm,torque_nm,tool_wear_min,twf,hdf,pwf,osf,rnf,true_label,predicted_label,predicted_probability_failure,error_type
+2941,MLPClassifier,M,300.7,309.6,1996,19.8,203,1,0,0,0,0,1,0,0.7444161029626001,false_negative
+4361,MLPClassifier,M,302.1,310.1,1379,48.2,166,0,1,0,0,0,1,0,0.7213201497572577,false_negative
+1996,MLPClassifier,M,298.4,308.0,1416,38.2,198,1,0,0,0,0,1,0,0.4398733829705443,false_negative
+4778,MLPClassifier,H,303.6,312.2,1371,54.6,112,0,1,0,0,0,1,0,0.42363438474540577,false_negative
+9174,MLPClassifier,L,297.8,308.9,1871,25.6,200,1,0,0,0,0,1,0,0.40666344014818817,false_negative
+442,MLPClassifier,L,297.4,308.5,1399,61.5,61,0,0,1,0,0,1,0,0.4033556169289507,false_negative
+3829,MLPClassifier,H,302.3,310.9,1366,48.4,130,0,1,0,0,0,1,0,0.40005072400077796,false_negative
+8199,MLPClassifier,L,299.2,310.7,1737,27.0,225,1,0,0,0,0,1,0,0.3657869981667327,false_negative
+8690,MLPClassifier,L,297.1,308.5,1323,44.4,207,1,0,0,0,0,1,0,0.3300733194871381,false_negative
+7426,MLPClassifier,M,300.0,311.4,1692,29.0,216,1,0,0,0,0,1,0,0.22986112964958055,false_negative
+1492,MLPClassifier,M,298.0,308.7,1479,58.5,176,0,0,1,0,0,1,0,0.14540753282155627,false_negative
