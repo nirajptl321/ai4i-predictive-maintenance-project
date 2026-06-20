@@ -20,31 +20,41 @@ def main() -> None:
             "Missing data/processed/ai4i_processed.csv. Run python -m src.preprocessing first."
         )
 
+    # Load the saved model package and the columns it expects.
     package = joblib.load(MODEL_PATH)
     model = package["pipeline"]
+    model_name = package["model_name"]
     feature_columns = package["feature_columns"]
     target_column = package["target_column"]
 
-    df = pd.read_csv(PROCESSED_DATA_PATH)
-    positive_examples = df[df[target_column] == 1].head(3)
-    negative_examples = df[df[target_column] == 0].head(3)
-    demo_rows = pd.concat([negative_examples, positive_examples], axis=0)
+    data = pd.read_csv(PROCESSED_DATA_PATH)
 
-    probabilities = model.predict_proba(demo_rows[feature_columns])[:, 1]
-    predictions = model.predict(demo_rows[feature_columns])
+    # Show three examples without failure and three examples with failure.
+    no_failure_rows = data[data[target_column] == 0].head(3)
+    failure_rows = data[data[target_column] == 1].head(3)
+    demo_rows = pd.concat([no_failure_rows, failure_rows], axis=0)
+
+    input_features = demo_rows[feature_columns]
+    predicted_classes = model.predict(input_features)
+    all_probabilities = model.predict_proba(input_features)
+    failure_probabilities = all_probabilities[:, 1]
 
     print("AI4I Machine Failure Prediction Demo")
     print("This demo shows a few sample predictions only. Full evaluation is done by python -m src.evaluate.")
     print("This is a simple local demo, not deployment software.")
-    print(f"Loaded model: {package['model_name']}")
+    print(f"Loaded model: {model_name}")
     print()
 
-    for display_index, (row_index, row) in enumerate(demo_rows.iterrows(), start=1):
-        print(f"Sample {display_index}")
-        print(f"  Original processed row index: {row_index}")
+    for sample_number in range(len(demo_rows)):
+        row = demo_rows.iloc[sample_number]
+        original_row_index = demo_rows.index[sample_number]
+        display_number = sample_number + 1
+
+        print(f"Sample {display_number}")
+        print(f"  Original processed row index: {original_row_index}")
         print(f"  True class: {int(row[target_column])}")
-        print(f"  Predicted class: {int(predictions[display_index - 1])}")
-        print(f"  Predicted probability of machine failure: {probabilities[display_index - 1]:.4f}")
+        print(f"  Predicted class: {int(predicted_classes[sample_number])}")
+        print(f"  Predicted probability of machine failure: {failure_probabilities[sample_number]:.4f}")
         print("  Input feature values:")
         print(f"  Type: {row['type']}")
         print(f"  Air temperature [K]: {row['air_temperature_k']}")
