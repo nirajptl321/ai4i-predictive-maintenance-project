@@ -37,6 +37,7 @@ SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
 
 def save_model_comparison_plot(metrics_df: pd.DataFrame) -> None:
     plot_df = metrics_df.sort_values("f1_score", ascending=True)
+
     # Extra width and left margin prevent long model names from being cut off in the report.
     fig, ax = plt.subplots(figsize=(11, 6))
     ax.barh(plot_df["model"], plot_df["f1_score"], color="#4C78A8", label="F1-score")
@@ -53,32 +54,43 @@ def save_model_comparison_plot(metrics_df: pd.DataFrame) -> None:
 
 def main() -> None:
     ensure_directories()
-    df = load_processed_data()
-    X_train, X_validation, X_test, y_train, y_validation, y_test = make_train_validation_test_split(df)
+    processed_data = load_processed_data()
+
+    X_train, X_validation, X_test, y_train, y_validation, y_test = make_train_validation_test_split(
+        processed_data
+    )
     del X_test, y_test
 
+    # Train every candidate model and choose the best one using validation metrics.
     metrics_df, selected_models, best_model_name = train_and_validate_models(
         X_train,
         y_train,
         X_validation,
         y_validation,
     )
-    trial_records = [
-        trial
-        for model_result in selected_models.values()
-        for trial in model_result["validation_trials"]
-    ]
+
+    trial_records = []
+    for model_result in selected_models.values():
+        for trial in model_result["validation_trials"]:
+            trial_records.append(trial)
+
     trial_df = pd.DataFrame(trial_records)
     metrics_df.to_csv(METRICS_TABLE_PATH, index=False)
     trial_df.to_csv(HYPERPARAMETER_TRIALS_PATH, index=False)
     save_model_comparison_plot(metrics_df)
 
+    # Refit the selected model on train + validation data before final testing.
     best_params = selected_models[best_model_name]["best_params"]
     X_train_validation = pd.concat([X_train, X_validation], axis=0)
     y_train_validation = pd.concat([y_train, y_validation], axis=0)
-    final_pipeline = fit_final_model(best_model_name, best_params, X_train_validation, y_train_validation)
+    final_pipeline = fit_final_model(
+        best_model_name,
+        best_params,
+        X_train_validation,
+        y_train_validation,
+    )
 
-    package = {
+    final_model_package = {
         "pipeline": final_pipeline,
         "model_name": best_model_name,
         "best_params": best_params,
@@ -90,7 +102,7 @@ def main() -> None:
         "validation_metrics": selected_models[best_model_name]["validation_metrics"],
         "all_validation_results": json.loads(metrics_df.to_json(orient="records")),
     }
-    joblib.dump(package, FINAL_MODEL_PATH)
+    joblib.dump(final_model_package, FINAL_MODEL_PATH)
 
     print(f"Validation metrics saved to: {METRICS_TABLE_PATH}")
     print(f"Hyperparameter trials saved to: {HYPERPARAMETER_TRIALS_PATH}")

@@ -18,37 +18,46 @@ from src.utils import ensure_directories
 def create_processed_dataset() -> pd.DataFrame:
     """Clean columns, remove IDs, and save the processed AI4I dataset."""
     ensure_directories()
-    raw_df = load_raw_data()
-    df = clean_column_names(raw_df)
+    raw_data = load_raw_data()
+    processed_data = clean_column_names(raw_data)
 
-    missing = [column for column in ALL_REQUIRED_COLUMNS if column not in df.columns]
-    if missing:
-        raise ValueError(f"Required columns are missing after cleaning: {missing}")
+    missing_columns = []
+    for column in ALL_REQUIRED_COLUMNS:
+        if column not in processed_data.columns:
+            missing_columns.append(column)
 
-    df = df.drop(columns=ID_COLUMNS, errors="ignore")
+    if missing_columns:
+        raise ValueError(f"Required columns are missing after cleaning: {missing_columns}")
 
-    ordered_columns = []
+    processed_data = processed_data.drop(columns=ID_COLUMNS, errors="ignore")
+
+    # Put the model columns first, then keep any extra dataset columns after them.
+    important_columns = []
     for column in ALL_REQUIRED_COLUMNS + LEAKAGE_COLUMNS:
-        if column in df.columns and column not in ordered_columns:
-            ordered_columns.append(column)
+        if column in processed_data.columns and column not in important_columns:
+            important_columns.append(column)
 
-    remaining_columns = [column for column in df.columns if column not in ordered_columns]
-    df = df[ordered_columns + remaining_columns]
-    df[TARGET_COLUMN] = df[TARGET_COLUMN].astype(int)
+    extra_columns = []
+    for column in processed_data.columns:
+        if column not in important_columns:
+            extra_columns.append(column)
+
+    ordered_columns = important_columns + extra_columns
+    processed_data = processed_data[ordered_columns]
+    processed_data[TARGET_COLUMN] = processed_data[TARGET_COLUMN].astype(int)
 
     PROCESSED_DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(PROCESSED_DATA_PATH, index=False)
-    return df
+    processed_data.to_csv(PROCESSED_DATA_PATH, index=False)
+    return processed_data
 
 
 def main() -> None:
-    df = create_processed_dataset()
+    processed_data = create_processed_dataset()
     print(f"Processed dataset saved to: {PROCESSED_DATA_PATH}")
-    print(f"Rows: {len(df):,}")
-    print(f"Columns: {list(df.columns)}")
+    print(f"Rows: {len(processed_data):,}")
+    print(f"Columns: {list(processed_data.columns)}")
     print("Model feature columns exclude the diagnostic failure mode columns.")
 
 
 if __name__ == "__main__":
     main()
-

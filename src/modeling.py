@@ -29,11 +29,19 @@ class ModelSpec:
 
 def make_preprocessor() -> ColumnTransformer:
     """Build the common preprocessing step for all models."""
+    # Machine type is categorical, so it is converted into one-hot columns.
+    type_transformer = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
+
+    # Numeric sensor readings are scaled before they reach the model.
+    numeric_transformer = StandardScaler()
+
+    transformers = [
+        ("type", type_transformer, [TYPE_COLUMN]),
+        ("numeric", numeric_transformer, NUMERIC_FEATURE_COLUMNS),
+    ]
+
     return ColumnTransformer(
-        transformers=[
-            ("type", OneHotEncoder(handle_unknown="ignore", sparse_output=False), [TYPE_COLUMN]),
-            ("numeric", StandardScaler(), NUMERIC_FEATURE_COLUMNS),
-        ],
+        transformers=transformers,
         remainder="drop",
         verbose_feature_names_out=False,
     )
@@ -41,12 +49,12 @@ def make_preprocessor() -> ColumnTransformer:
 
 def make_pipeline(estimator: BaseEstimator) -> Pipeline:
     """Attach preprocessing to a classifier."""
-    return Pipeline(
-        steps=[
-            ("preprocessor", make_preprocessor()),
-            ("model", estimator),
-        ]
-    )
+    # Every candidate model gets the same preprocessing for a fair comparison.
+    pipeline_steps = [
+        ("preprocessor", make_preprocessor()),
+        ("model", estimator),
+    ]
+    return Pipeline(steps=pipeline_steps)
 
 
 def model_specs() -> OrderedDict[str, ModelSpec]:
@@ -110,8 +118,19 @@ def model_specs() -> OrderedDict[str, ModelSpec]:
 def _is_better(candidate: dict[str, float], incumbent: dict[str, float] | None) -> bool:
     if incumbent is None:
         return True
-    candidate_key = (candidate["f1_score"], candidate["recall"], candidate["f2_score"], candidate["roc_auc"])
-    incumbent_key = (incumbent["f1_score"], incumbent["recall"], incumbent["f2_score"], incumbent["roc_auc"])
+
+    candidate_key = (
+        candidate["f1_score"],
+        candidate["recall"],
+        candidate["f2_score"],
+        candidate["roc_auc"],
+    )
+    incumbent_key = (
+        incumbent["f1_score"],
+        incumbent["recall"],
+        incumbent["f2_score"],
+        incumbent["roc_auc"],
+    )
     return candidate_key > incumbent_key
 
 
@@ -122,34 +141,35 @@ def train_and_validate_models(
     y_validation: pd.Series,
 ) -> tuple[pd.DataFrame, dict[str, dict], str]:
     """Tune required models on train/validation data and select by validation F1."""
-    records = []
+    summary_records = []
     selected_models: dict[str, dict] = {}
 
     for spec in model_specs().values():
-        param_grid = list(ParameterGrid(spec.param_grid or {}))
+        parameter_grid = list(ParameterGrid(spec.param_grid or {}))
         trial_records = []
         best_metrics: dict[str, float] | None = None
         best_params: dict | None = None
         best_pipeline: Pipeline | None = None
 
-        for trial_number, params in enumerate(param_grid, start=1):
+        for trial_number, params in enumerate(parameter_grid, start=1):
             estimator = clone(spec.estimator).set_params(**params)
             pipeline = make_pipeline(estimator)
             pipeline.fit(X_train, y_train)
 
+            # Each validation trial is saved so the tuning process can be checked later.
             y_pred = pipeline.predict(X_validation)
             y_probability = positive_class_probability(pipeline, X_validation)
             metrics = classification_metrics(y_validation, y_pred, y_probability)
-            trial_records.append(
-                {
-                    "model": spec.name,
-                    "trial_number": trial_number,
-                    "split": "validation",
-                    "tuned": bool(spec.param_grid),
-                    "params": json.dumps(params, sort_keys=True),
-                    **metrics,
-                }
-            )
+
+            trial_record = {
+                "model": spec.name,
+                "trial_number": trial_number,
+                "split": "validation",
+                "tuned": bool(spec.param_grid),
+                "params": json.dumps(params, sort_keys=True),
+                **metrics,
+            }
+            trial_records.append(trial_record)
 
             if _is_better(metrics, best_metrics):
                 best_metrics = metrics
@@ -159,15 +179,15 @@ def train_and_validate_models(
         if best_metrics is None or best_params is None or best_pipeline is None:
             raise RuntimeError(f"No model candidate was trained for {spec.name}")
 
-        records.append(
-            {
-                "model": spec.name,
-                "split": "validation",
-                "tuned": bool(spec.param_grid),
-                "best_params": json.dumps(best_params, sort_keys=True),
-                **best_metrics,
-            }
-        )
+        summary_record = {
+            "model": spec.name,
+            "split": "validation",
+            "tuned": bool(spec.param_grid),
+            "best_params": json.dumps(best_params, sort_keys=True),
+            **best_metrics,
+        }
+        summary_records.append(summary_record)
+
         selected_models[spec.name] = {
             "pipeline": best_pipeline,
             "best_params": best_params,
@@ -176,7 +196,9 @@ def train_and_validate_models(
             "tuned": bool(spec.param_grid),
         }
 
-    metrics_df = pd.DataFrame(records)
+    metrics_df = pd.DataFrame(summary_records)
+
+    # Rank models by validation F1 first, then by recall, F2, and ROC-AUC as tie breakers.
     metrics_df = metrics_df.sort_values(
         by=["f1_score", "recall", "f2_score", "roc_auc"],
         ascending=False,

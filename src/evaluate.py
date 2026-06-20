@@ -35,6 +35,7 @@ SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
 
 def save_confusion_matrix_plot(y_true: pd.Series, y_pred) -> None:
     matrix = confusion_matrix(y_true, y_pred, labels=[0, 1])
+
     fig, ax = plt.subplots(figsize=(6, 5))
     display = ConfusionMatrixDisplay(
         confusion_matrix=matrix,
@@ -48,7 +49,7 @@ def save_confusion_matrix_plot(y_true: pd.Series, y_pred) -> None:
 
 
 def save_feature_importance_plot(model, X_test: pd.DataFrame, y_test: pd.Series) -> None:
-    result = permutation_importance(
+    importance_result = permutation_importance(
         model,
         X_test,
         y_test,
@@ -60,8 +61,8 @@ def save_feature_importance_plot(model, X_test: pd.DataFrame, y_test: pd.Series)
     importance_df = pd.DataFrame(
         {
             "feature": X_test.columns,
-            "importance": result.importances_mean,
-            "std": result.importances_std,
+            "importance": importance_result.importances_mean,
+            "std": importance_result.importances_std,
         }
     ).sort_values("importance", ascending=True)
 
@@ -86,9 +87,10 @@ def main() -> None:
     model = model_package["pipeline"]
     model_name = model_package["model_name"]
 
-    df = load_processed_data()
-    _, _, X_test, _, _, y_test = make_train_validation_test_split(df)
+    processed_data = load_processed_data()
+    _, _, X_test, _, _, y_test = make_train_validation_test_split(processed_data)
 
+    # Evaluate only the saved final model on the held-out test set.
     y_pred = model.predict(X_test)
     y_probability = positive_class_probability(model, X_test)
     metrics = classification_metrics(y_test, y_pred, y_probability)

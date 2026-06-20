@@ -4,6 +4,7 @@ from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 
+# Main project folders and input/output files.
 DATA_DIR = ROOT_DIR / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
@@ -22,11 +23,13 @@ FULL_RUN_LOG_PATH = RESULTS_DIR / "full_reproducibility_run.txt"
 DEMO_OUTPUT_PATH = RESULTS_DIR / "demo_output.txt"
 MISSING_VALUES_PATH = RESULTS_DIR / "missing_values_summary.csv"
 
+# Reproducible split settings used by training and evaluation.
 RANDOM_STATE = 42
 TRAIN_SIZE = 0.70
 VALIDATION_SIZE = 0.15
 TEST_SIZE = 0.15
 
+# Column groups from the cleaned AI4I dataset.
 TARGET_COLUMN = "machine_failure"
 TYPE_COLUMN = "type"
 ID_COLUMNS = ["udi", "product_id"]
