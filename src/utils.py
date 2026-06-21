@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import math
 from pathlib import Path
 
 import numpy as np
@@ -103,21 +102,10 @@ def make_train_validation_test_split(
 
 
 def positive_class_probability(model, X: pd.DataFrame) -> np.ndarray:
-    """Return probabilities for class 1, using a safe fallback if needed."""
-    if hasattr(model, "predict_proba"):
-        class_probabilities = model.predict_proba(X)
-        positive_probabilities = class_probabilities[:, 1]
-        return positive_probabilities
-
-    scores = model.decision_function(X)
-    min_score = float(np.min(scores))
-    max_score = float(np.max(scores))
-
-    if math.isclose(min_score, max_score):
-        return np.full(shape=len(scores), fill_value=0.5)
-
-    normalized_scores = (scores - min_score) / (max_score - min_score)
-    return normalized_scores
+    """Return the predicted probability for class 1, meaning machine failure."""
+    class_probabilities = model.predict_proba(X)
+    positive_probabilities = class_probabilities[:, 1]
+    return positive_probabilities
 
 
 def classification_metrics(
