@@ -1,14 +1,22 @@
-"""Exploratory data analysis outputs for the AI4I dataset."""
+"""Exploratory data analysis outputs for the AI4I dataset.
+
+This script does not train a model. It reads the processed dataset and saves
+plots/tables that help explain the data in the report and presentation.
+"""
 
 from __future__ import annotations
 
 # Matplotlib setup
 import os
 
+# Use a temporary matplotlib config folder so plot generation works in command
+# line environments without writing user-specific matplotlib files.
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib-ai4i")
 
 import matplotlib
 
+# Agg is a non-interactive backend. It saves images to disk instead of opening
+# a plot window, which is what we need for a reproducible project script.
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
@@ -30,12 +38,16 @@ from src.utils import ensure_directories
 sns.set_theme(style="whitegrid")
 
 # Plot style constants
+# These settings keep all generated plots consistent and readable in the report.
 SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
 FAILURE_PALETTE = {0: "#4C78A8", 1: "#F58518"}
 
 
 # Class balance plot
 def save_class_balance_plot(df: pd.DataFrame) -> None:
+    """Save a bar chart showing how many rows are failures vs non-failures."""
+    # The target is imbalanced, so this plot explains why recall and F2-score
+    # matter in addition to accuracy.
     counts = df[TARGET_COLUMN].value_counts().sort_index()
     total = counts.sum()
 
@@ -56,6 +68,8 @@ def save_class_balance_plot(df: pd.DataFrame) -> None:
 
 # Missing values summary
 def save_missing_values_summary(df: pd.DataFrame) -> None:
+    """Save missing-value counts and percentages for every column."""
+    # This table is useful evidence that the processed dataset is complete.
     missing_counts = df.isna().sum()
     summary = missing_counts.rename("missing_count").to_frame()
     summary["missing_percent"] = summary["missing_count"] / len(df) * 100
@@ -64,6 +78,9 @@ def save_missing_values_summary(df: pd.DataFrame) -> None:
 
 # Feature distributions
 def save_feature_distribution_plots(df: pd.DataFrame) -> None:
+    """Save histograms/counts showing each feature by target class."""
+    # Numeric features are shown as histograms. The categorical machine type is
+    # shown as a count plot in the final subplot.
     fig, axes = plt.subplots(2, 3, figsize=(17, 9.5))
     axes = axes.flatten()
 
@@ -107,6 +124,9 @@ def save_feature_distribution_plots(df: pd.DataFrame) -> None:
 
 # Correlation heatmap
 def save_correlation_heatmap(df: pd.DataFrame) -> None:
+    """Save a heatmap of numeric feature and target correlations."""
+    # The heatmap gives a quick view of simple linear relationships. It is EDA
+    # only; the model comparison still decides which model performs best.
     columns = NUMERIC_FEATURE_COLUMNS + [TARGET_COLUMN]
     correlation_table = df[columns].corr(numeric_only=True)
 
@@ -134,6 +154,9 @@ def save_correlation_heatmap(df: pd.DataFrame) -> None:
 
 # Target vs feature plots
 def save_target_vs_feature_plots(df: pd.DataFrame) -> None:
+    """Save plots comparing each input feature against the target."""
+    # Boxplots show how numeric feature ranges differ for failure vs no failure.
+    # The final subplot summarizes failure rate by machine type.
     fig, axes = plt.subplots(2, 3, figsize=(17, 9.5))
     axes = axes.flatten()
     for ax, column in zip(axes, NUMERIC_FEATURE_COLUMNS):
@@ -157,6 +180,9 @@ def save_target_vs_feature_plots(df: pd.DataFrame) -> None:
 
 # Failure mode counts
 def save_failure_mode_count_plot(df: pd.DataFrame) -> None:
+    """Save counts for diagnostic failure modes used only for explanation."""
+    # Failure-mode columns explain what kind of failure occurred. They are not
+    # model inputs because they would leak target information.
     available_modes = []
     for column in LEAKAGE_COLUMNS:
         if column in df.columns:
@@ -187,6 +213,8 @@ def save_failure_mode_count_plot(df: pd.DataFrame) -> None:
 
 # Main runner
 def main() -> None:
+    # The EDA script assumes preprocessing has already produced the processed
+    # CSV, then writes all EDA outputs into results/.
     ensure_directories()
     processed_data = load_processed_data()
 

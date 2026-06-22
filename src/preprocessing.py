@@ -1,4 +1,8 @@
-"""Preprocess the raw AI4I dataset into a clean project CSV."""
+"""Preprocess the raw AI4I dataset into a clean project CSV.
+
+Running this file creates data/processed/ai4i_processed.csv. That processed
+file is the single dataset used by EDA, training, evaluation, and the demo.
+"""
 
 from __future__ import annotations
 
@@ -30,6 +34,8 @@ def create_processed_dataset() -> pd.DataFrame:
         if column not in processed_data.columns:
             missing_columns.append(column)
 
+    # Stop immediately if an expected column is missing. Without this check the
+    # model could train on the wrong data or fail later with a less clear error.
     if missing_columns:
         raise ValueError(f"Required columns are missing after cleaning: {missing_columns}")
 
@@ -42,6 +48,8 @@ def create_processed_dataset() -> pd.DataFrame:
         if column in processed_data.columns and column not in important_columns:
             important_columns.append(column)
 
+    # Extra columns are preserved after the important columns so the processed
+    # CSV still contains the full cleaned dataset order where possible.
     extra_columns = []
     for column in processed_data.columns:
         if column not in important_columns:
@@ -60,6 +68,8 @@ def create_processed_dataset() -> pd.DataFrame:
 
 
 def main() -> None:
+    # main() is the command-line entry point used by:
+    # python -m src.preprocessing
     processed_data = create_processed_dataset()
     print(f"Processed dataset saved to: {PROCESSED_DATA_PATH}")
     print(f"Rows: {len(processed_data):,}")

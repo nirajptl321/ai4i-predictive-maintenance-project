@@ -1,15 +1,22 @@
-"""Evaluate the saved final model once on the held-out test split."""
+"""Evaluate the saved final model once on the held-out test split.
+
+This script does not train or tune models. It loads models/final_model.joblib,
+recreates the same data split, and reports final metrics on the test set.
+"""
 
 from __future__ import annotations
 
 # Matplotlib setup
 import os
 
+# Use a temporary matplotlib config location so evaluation can run in a plain
+# command-line environment.
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib-ai4i")
 
 import joblib
 import matplotlib
 
+# Agg writes plots to disk instead of opening windows.
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
@@ -37,6 +44,8 @@ SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
 
 # Confusion matrix plot
 def save_confusion_matrix_plot(y_true: pd.Series, y_pred) -> None:
+    """Save the final test confusion matrix plot."""
+    # labels=[0, 1] fixes the class order as no failure, then failure.
     matrix = confusion_matrix(y_true, y_pred, labels=[0, 1])
 
     fig, ax = plt.subplots(figsize=(6, 5))
@@ -53,6 +62,9 @@ def save_confusion_matrix_plot(y_true: pd.Series, y_pred) -> None:
 
 # Feature importance plot
 def save_feature_importance_plot(model, X_test: pd.DataFrame, y_test: pd.Series) -> None:
+    """Save permutation importance for the final model on the test split."""
+    # Permutation importance measures how much test F1 drops when each feature
+    # is shuffled. This keeps feature importance tied to final model behavior.
     importance_result = permutation_importance(
         model,
         X_test,
@@ -86,6 +98,8 @@ def main() -> None:
     # Create output folders before saving metrics or plots.
     ensure_directories()
 
+    # Evaluation depends on the training script having already saved the final
+    # model package.
     if not FINAL_MODEL_PATH.exists():
         raise FileNotFoundError("Final model not found. Run python -m src.train first.")
 
@@ -96,10 +110,15 @@ def main() -> None:
 
     # Load the processed data and recreate the same split.
     processed_data = load_processed_data()
+
+    # Only X_test and y_test are used here. The train and validation outputs are
+    # ignored because this script is for final testing only.
     _, _, X_test, _, _, y_test = make_train_validation_test_split(processed_data)
 
     # Evaluate only the saved final model on the held-out test set.
     y_pred = model.predict(X_test)
+
+    # ROC-AUC needs class probabilities, not just hard class predictions.
     y_probability = positive_class_probability(model, X_test)
     metrics = classification_metrics(y_test, y_pred, y_probability)
 

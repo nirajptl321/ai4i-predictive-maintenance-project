@@ -1,4 +1,9 @@
-"""Train, tune, compare, select, and save the final AI4I model."""
+"""Train, tune, compare, select, and save the final AI4I model.
+
+This is the main training script. It starts from the processed CSV, compares
+models on the validation split, refits the selected model, and saves the final
+joblib package used by evaluation and the demo.
+"""
 
 from __future__ import annotations
 
@@ -6,11 +11,14 @@ from __future__ import annotations
 import json
 import os
 
+# Store matplotlib cache/config in a temporary folder so command-line plot
+# generation does not depend on a user's desktop environment.
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib-ai4i")
 
 import joblib
 import matplotlib
 
+# Agg saves plots directly to files instead of opening interactive windows.
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
@@ -39,6 +47,9 @@ SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
 
 # Validation comparison plot
 def save_model_comparison_plot(metrics_df: pd.DataFrame) -> None:
+    """Save a chart comparing validation scores for the candidate models."""
+    # Sorting ascending makes the horizontal bar chart read from lower scores
+    # to higher scores.
     plot_df = metrics_df.sort_values("f1_score", ascending=True)
 
     # Extra width and left margin prevent long model names from being cut off in the report.
@@ -58,12 +69,18 @@ def save_model_comparison_plot(metrics_df: pd.DataFrame) -> None:
 def main() -> None:
     # Create output folders and load the processed project dataset.
     ensure_directories()
+
+    # Training starts from the processed CSV, not the raw CSV, because
+    # preprocessing handles column cleaning and ID-column removal.
     processed_data = load_processed_data()
 
     # Recreate the same train/validation/test split used throughout the project.
     X_train, X_validation, X_test, y_train, y_validation, y_test = make_train_validation_test_split(
         processed_data
     )
+
+    # The test set is deliberately deleted in training so it cannot be used for
+    # model selection by accident.
     del X_test, y_test
 
     # Train every candidate model and choose the best one using validation metrics.
@@ -75,6 +92,7 @@ def main() -> None:
     )
 
     # Save the validation summary and full tuning history.
+    # This loop flattens all per-model trial records into one list for the CSV.
     trial_records = []
     for model_result in selected_models.values():
         for trial in model_result["validation_trials"]:
@@ -83,6 +101,8 @@ def main() -> None:
     trial_df = pd.DataFrame(trial_records)
     metrics_df.to_csv(METRICS_TABLE_PATH, index=False)
     trial_df.to_csv(HYPERPARAMETER_TRIALS_PATH, index=False)
+
+    # The comparison plot is a visual summary of the validation table.
     save_model_comparison_plot(metrics_df)
 
     # Pull out the winning model settings.
@@ -90,6 +110,8 @@ def main() -> None:
     best_params = best_model_result["best_params"]
 
     # Refit the selected model on train + validation data before final testing.
+    # Validation data has served its purpose after model selection, so it can be
+    # combined with training data for the final saved model.
     X_train_validation = pd.concat([X_train, X_validation], axis=0)
     y_train_validation = pd.concat([y_train, y_validation], axis=0)
     final_pipeline = fit_final_model(
@@ -100,6 +122,8 @@ def main() -> None:
     )
 
     # Save the final package with the exact metadata used by the rest of the project.
+    # Keeping metadata with the pipeline makes the demo and evaluation scripts
+    # independent of hard-coded model details.
     final_model_package = {
         "pipeline": final_pipeline,
         "model_name": best_model_name,
