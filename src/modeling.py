@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+# Imports
 import json
 from collections import OrderedDict
 from dataclasses import dataclass
@@ -20,13 +21,17 @@ from src.config import NUMERIC_FEATURE_COLUMNS, RANDOM_STATE, TYPE_COLUMN
 from src.utils import classification_metrics, positive_class_probability
 
 
+# Model specification container
 @dataclass(frozen=True)
 class ModelSpec:
+    """Keep one model, its display name, and its optional tuning grid together."""
+
     name: str
     estimator: BaseEstimator
     param_grid: dict[str, list] | None = None
 
 
+# Preprocessing pipeline
 def make_preprocessor() -> ColumnTransformer:
     """Build the common preprocessing step for all models."""
     # Machine type is categorical, so it is converted into one-hot columns.
@@ -57,6 +62,7 @@ def make_pipeline(estimator: BaseEstimator) -> Pipeline:
     return Pipeline(steps=pipeline_steps)
 
 
+# Candidate model definitions
 def model_specs() -> OrderedDict[str, ModelSpec]:
     """Return exactly the five models required for the project."""
     specs = OrderedDict()
@@ -115,7 +121,9 @@ def model_specs() -> OrderedDict[str, ModelSpec]:
     return specs
 
 
+# Model comparison helper
 def _is_better(candidate: dict[str, float], incumbent: dict[str, float] | None) -> bool:
+    """Return True when a trial beats the current best validation result."""
     if incumbent is None:
         return True
 
@@ -134,6 +142,7 @@ def _is_better(candidate: dict[str, float], incumbent: dict[str, float] | None) 
     return candidate_key > incumbent_key
 
 
+# Training and validation loop
 def train_and_validate_models(
     X_train: pd.DataFrame,
     y_train: pd.Series,
@@ -145,6 +154,7 @@ def train_and_validate_models(
     selected_models: dict[str, dict] = {}
 
     for spec in model_specs().values():
+        # ParameterGrid expands each model's grid into one trial per parameter combination.
         parameter_grid = list(ParameterGrid(spec.param_grid or {}))
         trial_records = []
         best_metrics: dict[str, float] | None = None
@@ -152,6 +162,7 @@ def train_and_validate_models(
         best_pipeline: Pipeline | None = None
 
         for trial_number, params in enumerate(parameter_grid, start=1):
+            # Clone the estimator so each trial starts from a fresh, unfitted model.
             estimator = clone(spec.estimator).set_params(**params)
             pipeline = make_pipeline(estimator)
             pipeline.fit(X_train, y_train)
@@ -172,6 +183,7 @@ def train_and_validate_models(
             trial_records.append(trial_record)
 
             if _is_better(metrics, best_metrics):
+                # Keep the best trial for this model family.
                 best_metrics = metrics
                 best_params = params
                 best_pipeline = pipeline
@@ -208,6 +220,7 @@ def train_and_validate_models(
     return metrics_df, selected_models, best_model_name
 
 
+# Final refit
 def fit_final_model(
     model_name: str,
     best_params: dict,

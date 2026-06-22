@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+# Matplotlib setup
 import os
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib-ai4i")
@@ -28,15 +29,19 @@ from src.utils import ensure_directories
 
 sns.set_theme(style="whitegrid")
 
+# Plot style constants
 SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
 FAILURE_PALETTE = {0: "#4C78A8", 1: "#F58518"}
 
 
+# Class balance plot
 def save_class_balance_plot(df: pd.DataFrame) -> None:
     counts = df[TARGET_COLUMN].value_counts().sort_index()
+    total = counts.sum()
+
     fig, ax = plt.subplots(figsize=(7, 4.8))
     sns.barplot(x=counts.index.astype(str), y=counts.values, ax=ax, color="#4C78A8")
-    total = counts.sum()
+
     # Give the count labels room so the majority-class annotation does not hit the title.
     ax.set_ylim(0, counts.max() * 1.16)
     for index, value in enumerate(counts.values):
@@ -49,17 +54,15 @@ def save_class_balance_plot(df: pd.DataFrame) -> None:
     plt.close(fig)
 
 
+# Missing values summary
 def save_missing_values_summary(df: pd.DataFrame) -> None:
-    summary = (
-        df.isna()
-        .sum()
-        .rename("missing_count")
-        .to_frame()
-        .assign(missing_percent=lambda table: table["missing_count"] / len(df) * 100)
-    )
+    missing_counts = df.isna().sum()
+    summary = missing_counts.rename("missing_count").to_frame()
+    summary["missing_percent"] = summary["missing_count"] / len(df) * 100
     summary.to_csv(MISSING_VALUES_PATH)
 
 
+# Feature distributions
 def save_feature_distribution_plots(df: pd.DataFrame) -> None:
     fig, axes = plt.subplots(2, 3, figsize=(17, 9.5))
     axes = axes.flatten()
@@ -78,9 +81,18 @@ def save_feature_distribution_plots(df: pd.DataFrame) -> None:
         ax.set_title(column.replace("_", " ").title())
         ax.set_xlabel("")
 
-    sns.countplot(data=df, x=TYPE_COLUMN, hue=TARGET_COLUMN, palette=FAILURE_PALETTE, legend=False, ax=axes[-1])
-    axes[-1].set_title("Type")
-    axes[-1].set_xlabel("")
+    type_axis = axes[-1]
+    sns.countplot(
+        data=df,
+        x=TYPE_COLUMN,
+        hue=TARGET_COLUMN,
+        palette=FAILURE_PALETTE,
+        legend=False,
+        ax=type_axis,
+    )
+    type_axis.set_title("Type")
+    type_axis.set_xlabel("")
+
     legend_handles = [
         Patch(facecolor=FAILURE_PALETTE[0], edgecolor=FAILURE_PALETTE[0], label="0"),
         Patch(facecolor=FAILURE_PALETTE[1], edgecolor=FAILURE_PALETTE[1], label="1"),
@@ -93,12 +105,14 @@ def save_feature_distribution_plots(df: pd.DataFrame) -> None:
     plt.close(fig)
 
 
+# Correlation heatmap
 def save_correlation_heatmap(df: pd.DataFrame) -> None:
     columns = NUMERIC_FEATURE_COLUMNS + [TARGET_COLUMN]
-    corr = df[columns].corr(numeric_only=True)
+    correlation_table = df[columns].corr(numeric_only=True)
+
     fig, ax = plt.subplots(figsize=(10, 7.5))
     sns.heatmap(
-        corr,
+        correlation_table,
         annot=True,
         annot_kws={"size": 10},
         cmap="coolwarm",
@@ -118,6 +132,7 @@ def save_correlation_heatmap(df: pd.DataFrame) -> None:
     plt.close(fig)
 
 
+# Target vs feature plots
 def save_target_vs_feature_plots(df: pd.DataFrame) -> None:
     fig, axes = plt.subplots(2, 3, figsize=(17, 9.5))
     axes = axes.flatten()
@@ -128,19 +143,29 @@ def save_target_vs_feature_plots(df: pd.DataFrame) -> None:
         ax.set_ylabel("")
 
     failure_rate = df.groupby(TYPE_COLUMN, as_index=False)[TARGET_COLUMN].mean()
-    sns.barplot(data=failure_rate, x=TYPE_COLUMN, y=TARGET_COLUMN, ax=axes[-1], color="#F58518")
-    axes[-1].set_title("Failure Rate by Type")
-    axes[-1].set_xlabel("Type")
-    axes[-1].set_ylabel("Failure rate")
+    type_axis = axes[-1]
+    sns.barplot(data=failure_rate, x=TYPE_COLUMN, y=TARGET_COLUMN, ax=type_axis, color="#F58518")
+    type_axis.set_title("Failure Rate by Type")
+    type_axis.set_xlabel("Type")
+    type_axis.set_ylabel("Failure rate")
+
     fig.suptitle("Target vs Important Input Features", y=0.98)
     fig.tight_layout(rect=[0, 0, 1, 0.95])
     fig.savefig(PLOTS_DIR / "target_vs_features.png", **SAVEFIG_KWARGS)
     plt.close(fig)
 
 
+# Failure mode counts
 def save_failure_mode_count_plot(df: pd.DataFrame) -> None:
-    available_modes = [column for column in LEAKAGE_COLUMNS if column in df.columns]
-    counts = df[available_modes].sum().sort_values(ascending=False) if available_modes else pd.Series(dtype=int)
+    available_modes = []
+    for column in LEAKAGE_COLUMNS:
+        if column in df.columns:
+            available_modes.append(column)
+
+    if available_modes:
+        counts = df[available_modes].sum().sort_values(ascending=False)
+    else:
+        counts = pd.Series(dtype=int)
 
     fig, ax = plt.subplots(figsize=(8, 4.8))
     if counts.empty:
@@ -160,15 +185,18 @@ def save_failure_mode_count_plot(df: pd.DataFrame) -> None:
     plt.close(fig)
 
 
+# Main runner
 def main() -> None:
     ensure_directories()
-    df = load_processed_data()
-    save_class_balance_plot(df)
-    save_missing_values_summary(df)
-    save_feature_distribution_plots(df)
-    save_correlation_heatmap(df)
-    save_target_vs_feature_plots(df)
-    save_failure_mode_count_plot(df)
+    processed_data = load_processed_data()
+
+    save_class_balance_plot(processed_data)
+    save_missing_values_summary(processed_data)
+    save_feature_distribution_plots(processed_data)
+    save_correlation_heatmap(processed_data)
+    save_target_vs_feature_plots(processed_data)
+    save_failure_mode_count_plot(processed_data)
+
     print(f"EDA plots saved to: {PLOTS_DIR}")
     print(f"Missing values summary saved to: {MISSING_VALUES_PATH}")
 

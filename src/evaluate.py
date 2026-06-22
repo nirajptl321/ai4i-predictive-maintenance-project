@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+# Matplotlib setup
 import os
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib-ai4i")
@@ -30,9 +31,11 @@ from src.utils import (
 
 sns.set_theme(style="whitegrid")
 
+# Plot style constants
 SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
 
 
+# Confusion matrix plot
 def save_confusion_matrix_plot(y_true: pd.Series, y_pred) -> None:
     matrix = confusion_matrix(y_true, y_pred, labels=[0, 1])
 
@@ -48,6 +51,7 @@ def save_confusion_matrix_plot(y_true: pd.Series, y_pred) -> None:
     plt.close(fig)
 
 
+# Feature importance plot
 def save_feature_importance_plot(model, X_test: pd.DataFrame, y_test: pd.Series) -> None:
     importance_result = permutation_importance(
         model,
@@ -79,14 +83,18 @@ def save_feature_importance_plot(model, X_test: pd.DataFrame, y_test: pd.Series)
 
 
 def main() -> None:
+    # Create output folders before saving metrics or plots.
     ensure_directories()
+
     if not FINAL_MODEL_PATH.exists():
         raise FileNotFoundError("Final model not found. Run python -m src.train first.")
 
+    # Load the saved final model package.
     model_package = joblib.load(FINAL_MODEL_PATH)
     model = model_package["pipeline"]
     model_name = model_package["model_name"]
 
+    # Load the processed data and recreate the same split.
     processed_data = load_processed_data()
     _, _, X_test, _, _, y_test = make_train_validation_test_split(processed_data)
 
@@ -94,6 +102,8 @@ def main() -> None:
     y_pred = model.predict(X_test)
     y_probability = positive_class_probability(model, X_test)
     metrics = classification_metrics(y_test, y_pred, y_probability)
+
+    # Save the test metrics with confusion-matrix counts.
     metrics_row = {
         "model": model_name,
         "split": "test",
@@ -102,9 +112,11 @@ def main() -> None:
     }
     pd.DataFrame([metrics_row]).to_csv(TEST_METRICS_PATH, index=False)
 
+    # Save the final evaluation plots.
     save_confusion_matrix_plot(y_test, y_pred)
     save_feature_importance_plot(model, X_test, y_test)
 
+    # Print the same metrics shown in the report.
     print(f"Final model: {model_name}")
     print(f"Test metrics saved to: {TEST_METRICS_PATH}")
     print(metrics_to_text(metrics))

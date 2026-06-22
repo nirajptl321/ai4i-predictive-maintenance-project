@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+# Matplotlib setup
 import json
 import os
 
@@ -32,9 +33,11 @@ from src.utils import ensure_directories, make_train_validation_test_split
 
 sns.set_theme(style="whitegrid")
 
+# Plot style constants
 SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
 
 
+# Validation comparison plot
 def save_model_comparison_plot(metrics_df: pd.DataFrame) -> None:
     plot_df = metrics_df.sort_values("f1_score", ascending=True)
 
@@ -53,9 +56,11 @@ def save_model_comparison_plot(metrics_df: pd.DataFrame) -> None:
 
 
 def main() -> None:
+    # Create output folders and load the processed project dataset.
     ensure_directories()
     processed_data = load_processed_data()
 
+    # Recreate the same train/validation/test split used throughout the project.
     X_train, X_validation, X_test, y_train, y_validation, y_test = make_train_validation_test_split(
         processed_data
     )
@@ -69,6 +74,7 @@ def main() -> None:
         y_validation,
     )
 
+    # Save the validation summary and full tuning history.
     trial_records = []
     for model_result in selected_models.values():
         for trial in model_result["validation_trials"]:
@@ -79,8 +85,11 @@ def main() -> None:
     trial_df.to_csv(HYPERPARAMETER_TRIALS_PATH, index=False)
     save_model_comparison_plot(metrics_df)
 
+    # Pull out the winning model settings.
+    best_model_result = selected_models[best_model_name]
+    best_params = best_model_result["best_params"]
+
     # Refit the selected model on train + validation data before final testing.
-    best_params = selected_models[best_model_name]["best_params"]
     X_train_validation = pd.concat([X_train, X_validation], axis=0)
     y_train_validation = pd.concat([y_train, y_validation], axis=0)
     final_pipeline = fit_final_model(
@@ -90,6 +99,7 @@ def main() -> None:
         y_train_validation,
     )
 
+    # Save the final package with the exact metadata used by the rest of the project.
     final_model_package = {
         "pipeline": final_pipeline,
         "model_name": best_model_name,
@@ -99,11 +109,12 @@ def main() -> None:
         "excluded_leakage_columns": LEAKAGE_COLUMNS,
         "random_state": RANDOM_STATE,
         "selection_metric": "validation_f1_score",
-        "validation_metrics": selected_models[best_model_name]["validation_metrics"],
+        "validation_metrics": best_model_result["validation_metrics"],
         "all_validation_results": json.loads(metrics_df.to_json(orient="records")),
     }
     joblib.dump(final_model_package, FINAL_MODEL_PATH)
 
+    # Print a short command-line summary.
     print(f"Validation metrics saved to: {METRICS_TABLE_PATH}")
     print(f"Hyperparameter trials saved to: {HYPERPARAMETER_TRIALS_PATH}")
     print(f"Model comparison plot saved to: {PLOTS_DIR / 'model_comparison.png'}")

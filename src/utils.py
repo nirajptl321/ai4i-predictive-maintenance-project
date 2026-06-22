@@ -34,6 +34,7 @@ from src.config import (
 )
 
 
+# Filesystem helpers
 def ensure_directories() -> None:
     """Create output directories used by the project."""
     output_directories = [
@@ -52,6 +53,7 @@ def ensure_directories() -> None:
         Path(path).mkdir(parents=True, exist_ok=True)
 
 
+# Column validation
 def validate_model_columns(df: pd.DataFrame) -> None:
     """Validate required columns and make leakage violations explicit."""
     required_columns = FEATURE_COLUMNS + [TARGET_COLUMN]
@@ -69,6 +71,7 @@ def validate_model_columns(df: pd.DataFrame) -> None:
         raise ValueError(f"Leakage columns are configured as model features: {leaked_features}")
 
 
+# Feature/target splitting
 def split_features_target(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
     """Return the approved feature matrix and binary target vector."""
     validate_model_columns(df)
@@ -77,6 +80,7 @@ def split_features_target(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
     return feature_table, target_values
 
 
+# Train/validation/test split
 def make_train_validation_test_split(
     df: pd.DataFrame,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, pd.Series]:
@@ -101,6 +105,7 @@ def make_train_validation_test_split(
     return X_train, X_validation, X_test, y_train, y_validation, y_test
 
 
+# Probability extraction
 def positive_class_probability(model, X: pd.DataFrame) -> np.ndarray:
     """Return the predicted probability for class 1, meaning machine failure."""
     class_probabilities = model.predict_proba(X)
@@ -108,6 +113,7 @@ def positive_class_probability(model, X: pd.DataFrame) -> np.ndarray:
     return positive_probabilities
 
 
+# Metrics
 def classification_metrics(
     y_true: pd.Series | np.ndarray,
     y_pred: np.ndarray,
@@ -128,6 +134,7 @@ def classification_metrics(
     return metrics
 
 
+# Confusion matrix
 def confusion_matrix_values(y_true: pd.Series | np.ndarray, y_pred: np.ndarray) -> dict[str, int]:
     """Return TN, FP, FN, TP values for the binary confusion matrix."""
     matrix = confusion_matrix(y_true, y_pred, labels=[0, 1])
@@ -142,6 +149,7 @@ def confusion_matrix_values(y_true: pd.Series | np.ndarray, y_pred: np.ndarray) 
     return values
 
 
+# Metric text formatting
 def metrics_to_text(metrics: dict[str, float]) -> str:
     """Format metric values for terminal output."""
     lines = []
