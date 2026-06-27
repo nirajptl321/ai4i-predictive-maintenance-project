@@ -90,21 +90,14 @@ The generated plot files were fixed at the source in the plotting code so that r
 ![Figure 1. Class balance](../results/plots/class_balance.png)
 Figure 1 shows the distribution of the target variable. The failure class is much smaller than the no-failure class, which makes this an imbalanced classification problem and explains why accuracy alone is not enough.
 
-### Figure 2. Feature distributions
-![Figure 2. Feature distributions](../results/plots/feature_distributions.png)
-Figure 2 shows the distributions of the main operating features. No rows were removed as outliers because unusual operating points may be meaningful for failure prediction.
+### Figure 2. Target versus feature relationships
+![Figure 2. Target versus feature relationships](../results/plots/target_vs_features.png)
 
-### Figure 3. Correlation heatmap
-![Figure 3. Correlation heatmap](../results/plots/correlation_heatmap.png)
-Figure 3 shows the correlation relationships among numerical variables. Correlation is useful for understanding feature relationships, but it does not automatically determine which variables should be removed.
+Figure 2 compares the main input features against the binary target class. The box plots show how the operating conditions differ between no-failure and failure cases. This figure is more useful than separate feature-distribution histograms because it directly connects each feature to the prediction target. The failure cases tend to appear under different operating conditions, especially for torque, rotational speed, tool wear, and temperature-related measurements. The type subplot shows the failure rate by product type. These relationships support the modeling step because they show that the target is not random with respect to the input features, while also showing overlap between classes, which explains why the prediction problem is not perfectly separable.
 
-### Figure 4. Target versus feature relationships
-![Figure 4. Target versus feature relationships](../results/plots/target_vs_features.png)
-Figure 4 compares feature distributions across the target classes and shows where failure and non-failure samples overlap.
-
-### Figure 5. Failure mode counts
-![Figure 5. Failure mode counts](../results/plots/failure_mode_counts.png)
-Figure 5 summarizes diagnostic failure-mode columns for explanation only. These columns are excluded from model training to prevent leakage.
+### Figure 3. Failure mode counts
+![Figure 3. Failure mode counts](../results/plots/failure_mode_counts.png)
+Figure 3 summarizes diagnostic failure-mode columns for explanation only. These columns are excluded from model training to prevent leakage.
 
 ## 6. Methodology and Models
 The project trains exactly five supervised classification models. The purpose is to compare different model assumptions and levels of complexity, from a linear baseline to stronger tree-based ensembles.
@@ -180,9 +173,9 @@ HistGradientBoostingClassifier achieved the best validation F1-score and was sel
 | 4 | Extra Trees | 0.3939 | 0.2549 | 0.2968 | 0.9434 |
 | 5 | Logistic Regression | 0.2298 | 0.7255 | 0.3895 | 0.8750 |
 
-### Figure 6. Model comparison
-![Figure 6. Model comparison](../results/plots/model_comparison.png)
-Figure 6 compares validation F1-score, recall, and F2-score across the models. Logistic Regression had relatively high recall but low precision, while Extra Trees had high precision but weak recall. HistGradientBoostingClassifier provided the best overall balance.
+### Figure 4. Model comparison
+![Figure 4. Model comparison](../results/plots/model_comparison.png)
+Figure 4 compares validation F1-score, recall, and F2-score across the models. Logistic Regression had relatively high recall but low precision, while Extra Trees had high precision but weak recall. HistGradientBoostingClassifier provided the best overall balance.
 
 ### Table 12. Final test metrics
 | Metric | Value |
@@ -200,13 +193,14 @@ Figure 6 compares validation F1-score, recall, and F2-score across the models. L
 | No failure | 1444 | 5 |
 | Failure | 17 | 34 |
 
-### Figure 7. Test confusion matrix
-![Figure 7. Test confusion matrix](../results/plots/confusion_matrix.png)
+### Figure 5. Test confusion matrix
+![Figure 5. Test confusion matrix](../results/plots/confusion_matrix.png)
 The confusion matrix shows 1444 true negatives, 5 false positives, 17 false negatives, and 34 true positives. In maintenance terms, false positives are unnecessary inspections, while false negatives are missed failures.
 
-### Figure 8. Final model feature importance
-![Figure 8. Final model feature importance](../results/plots/feature_importance.png)
-Figure 8 shows permutation-based feature importance for the final model. Features that cause a larger decrease in performance when shuffled are more important to the model predictions.
+### Figure 6. Final model feature importance
+![Figure 6. Final model feature importance](../results/plots/feature_importance.png)
+
+Figure 6 shows permutation-based feature importance for the final HistGradientBoostingClassifier. For each feature, the evaluation process randomly shuffles that feature's values and measures how much the model's F1-score decreases. A larger mean decrease means the model relied more heavily on that feature for correct predictions. The black horizontal error bars show the variation across repeated shuffles, so shorter error bars indicate more stable importance estimates. Torque is the most important feature in this analysis, followed by air temperature and rotational speed. This agrees with the target-versus-feature plots, where these variables show visible differences between failure and no-failure cases. The type feature has the lowest permutation importance, meaning it contributed less to the final model than the continuous operating measurements.
 
 ## 10. Error Analysis and Qualitative Discussion
 The selected model had high precision and strong ROC-AUC, but recall was lower than precision. This means the model was conservative when predicting failures: false alarms were rare, but some true failures were missed.

@@ -22,7 +22,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from matplotlib.patches import Patch
 
 from src.config import (
     LEAKAGE_COLUMNS,
@@ -40,7 +39,6 @@ sns.set_theme(style="whitegrid")
 # Plot style constants
 # These settings keep all generated plots consistent and readable in the report.
 SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
-FAILURE_PALETTE = {0: "#4C78A8", 1: "#F58518"}
 
 
 # Class balance plot
@@ -74,82 +72,6 @@ def save_missing_values_summary(df: pd.DataFrame) -> None:
     summary = missing_counts.rename("missing_count").to_frame()
     summary["missing_percent"] = summary["missing_count"] / len(df) * 100
     summary.to_csv(MISSING_VALUES_PATH)
-
-
-# Feature distributions
-def save_feature_distribution_plots(df: pd.DataFrame) -> None:
-    """Save histograms/counts showing each feature by target class."""
-    # Numeric features are shown as histograms. The categorical machine type is
-    # shown as a count plot in the final subplot.
-    fig, axes = plt.subplots(2, 3, figsize=(17, 9.5))
-    axes = axes.flatten()
-
-    for ax, column in zip(axes, NUMERIC_FEATURE_COLUMNS):
-        sns.histplot(
-            data=df,
-            x=column,
-            hue=TARGET_COLUMN,
-            bins=35,
-            element="step",
-            palette=FAILURE_PALETTE,
-            legend=False,
-            ax=ax,
-        )
-        ax.set_title(column.replace("_", " ").title())
-        ax.set_xlabel("")
-
-    type_axis = axes[-1]
-    sns.countplot(
-        data=df,
-        x=TYPE_COLUMN,
-        hue=TARGET_COLUMN,
-        palette=FAILURE_PALETTE,
-        legend=False,
-        ax=type_axis,
-    )
-    type_axis.set_title("Type")
-    type_axis.set_xlabel("")
-
-    legend_handles = [
-        Patch(facecolor=FAILURE_PALETTE[0], edgecolor=FAILURE_PALETTE[0], label="0"),
-        Patch(facecolor=FAILURE_PALETTE[1], edgecolor=FAILURE_PALETTE[1], label="1"),
-    ]
-    # A shared legend keeps the small subplots from covering the distributions.
-    fig.legend(handles=legend_handles, title=TARGET_COLUMN, loc="lower center", ncol=2)
-    fig.suptitle("Feature Distributions by Machine Failure Target", y=0.98)
-    fig.tight_layout(rect=[0, 0.08, 1, 0.95])
-    fig.savefig(PLOTS_DIR / "feature_distributions.png", **SAVEFIG_KWARGS)
-    plt.close(fig)
-
-
-# Correlation heatmap
-def save_correlation_heatmap(df: pd.DataFrame) -> None:
-    """Save a heatmap of numeric feature and target correlations."""
-    # The heatmap gives a quick view of simple linear relationships. It is EDA
-    # only; the model comparison still decides which model performs best.
-    columns = NUMERIC_FEATURE_COLUMNS + [TARGET_COLUMN]
-    correlation_table = df[columns].corr(numeric_only=True)
-
-    fig, ax = plt.subplots(figsize=(10, 7.5))
-    sns.heatmap(
-        correlation_table,
-        annot=True,
-        annot_kws={"size": 10},
-        cmap="coolwarm",
-        center=0,
-        fmt=".2f",
-        linewidths=0.5,
-        cbar_kws={"shrink": 0.85},
-        ax=ax,
-    )
-    ax.set_title("Correlation Heatmap: Model Features and Target")
-    ax.tick_params(axis="x", labelrotation=45)
-    for label in ax.get_xticklabels():
-        label.set_horizontalalignment("right")
-    ax.tick_params(axis="y", labelrotation=0)
-    fig.tight_layout()
-    fig.savefig(PLOTS_DIR / "correlation_heatmap.png", **SAVEFIG_KWARGS)
-    plt.close(fig)
 
 
 # Target vs feature plots
@@ -220,8 +142,6 @@ def main() -> None:
 
     save_class_balance_plot(processed_data)
     save_missing_values_summary(processed_data)
-    save_feature_distribution_plots(processed_data)
-    save_correlation_heatmap(processed_data)
     save_target_vs_feature_plots(processed_data)
     save_failure_mode_count_plot(processed_data)
 

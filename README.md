@@ -184,8 +184,6 @@ The notebooks are walkthroughs for reading and presenting the work. The reproduc
 - `results/full_reproducibility_run.txt`
 - `results/demo_output.txt`
 - `results/plots/class_balance.png`
-- `results/plots/correlation_heatmap.png`
-- `results/plots/feature_distributions.png`
 - `results/plots/confusion_matrix.png`
 - `results/plots/model_comparison.png`
 - `results/plots/feature_importance.png`
