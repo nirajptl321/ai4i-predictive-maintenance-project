@@ -6,7 +6,6 @@ plots/tables that help explain the data in the report and presentation.
 
 from __future__ import annotations
 
-# Matplotlib setup
 import os
 
 # Use a temporary matplotlib config folder so plot generation works in command
@@ -36,12 +35,9 @@ from src.utils import ensure_directories
 
 sns.set_theme(style="whitegrid")
 
-# Plot style constants
-# These settings keep all generated plots consistent and readable in the report.
 SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
 
 
-# Class balance plot
 def save_class_balance_plot(df: pd.DataFrame) -> None:
     """Save a bar chart showing how many rows are failures vs non-failures."""
     # The target is imbalanced, so this plot explains why recall and F2-score
@@ -52,7 +48,6 @@ def save_class_balance_plot(df: pd.DataFrame) -> None:
     fig, ax = plt.subplots(figsize=(7, 4.8))
     sns.barplot(x=counts.index.astype(str), y=counts.values, ax=ax, color="#4C78A8")
 
-    # Give the count labels room so the majority-class annotation does not hit the title.
     ax.set_ylim(0, counts.max() * 1.16)
     for index, value in enumerate(counts.values):
         ax.text(index, value, f"{value:,}\n{value / total:.1%}", ha="center", va="bottom")
@@ -64,21 +59,16 @@ def save_class_balance_plot(df: pd.DataFrame) -> None:
     plt.close(fig)
 
 
-# Missing values summary
 def save_missing_values_summary(df: pd.DataFrame) -> None:
     """Save missing-value counts and percentages for every column."""
-    # This table is useful evidence that the processed dataset is complete.
     missing_counts = df.isna().sum()
     summary = missing_counts.rename("missing_count").to_frame()
     summary["missing_percent"] = summary["missing_count"] / len(df) * 100
     summary.to_csv(MISSING_VALUES_PATH)
 
 
-# Target vs feature plots
 def save_target_vs_feature_plots(df: pd.DataFrame) -> None:
     """Save plots comparing each input feature against the target."""
-    # Boxplots show how numeric feature ranges differ for failure vs no failure.
-    # The final subplot summarizes failure rate by machine type.
     fig, axes = plt.subplots(2, 3, figsize=(17, 9.5))
     axes = axes.flatten()
     for ax, column in zip(axes, NUMERIC_FEATURE_COLUMNS):
@@ -100,7 +90,6 @@ def save_target_vs_feature_plots(df: pd.DataFrame) -> None:
     plt.close(fig)
 
 
-# Failure mode counts
 def save_failure_mode_count_plot(df: pd.DataFrame) -> None:
     """Save counts for diagnostic failure modes used only for explanation."""
     # Failure-mode columns explain what kind of failure occurred. They are not
@@ -121,7 +110,6 @@ def save_failure_mode_count_plot(df: pd.DataFrame) -> None:
         ax.set_axis_off()
     else:
         sns.barplot(x=counts.index.str.upper(), y=counts.values, ax=ax, color="#54A24B")
-        # Extra headroom keeps bar labels clear when this image is inserted in documents.
         ax.set_ylim(0, counts.max() * 1.18)
         for index, value in enumerate(counts.values):
             ax.text(index, value, f"{int(value):,}", ha="center", va="bottom")
@@ -133,10 +121,7 @@ def save_failure_mode_count_plot(df: pd.DataFrame) -> None:
     plt.close(fig)
 
 
-# Main runner
 def main() -> None:
-    # The EDA script assumes preprocessing has already produced the processed
-    # CSV, then writes all EDA outputs into results/.
     ensure_directories()
     processed_data = load_processed_data()
 

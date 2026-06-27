@@ -7,7 +7,6 @@ joblib package used by evaluation and the demo.
 
 from __future__ import annotations
 
-# Matplotlib setup
 import json
 import os
 
@@ -41,18 +40,13 @@ from src.utils import ensure_directories, make_train_validation_test_split
 
 sns.set_theme(style="whitegrid")
 
-# Plot style constants
 SAVEFIG_KWARGS = {"dpi": 180, "bbox_inches": "tight", "pad_inches": 0.2}
 
 
-# Validation comparison plot
 def save_model_comparison_plot(metrics_df: pd.DataFrame) -> None:
     """Save a chart comparing validation scores for the candidate models."""
-    # Sorting ascending makes the horizontal bar chart read from lower scores
-    # to higher scores.
     plot_df = metrics_df.sort_values("f1_score", ascending=True)
 
-    # Extra width and left margin prevent long model names from being cut off in the report.
     fig, ax = plt.subplots(figsize=(11, 6))
     ax.barh(plot_df["model"], plot_df["f1_score"], color="#4C78A8", label="F1-score")
     ax.scatter(plot_df["recall"], plot_df["model"], color="#F58518", label="Recall", zorder=3)
@@ -67,7 +61,6 @@ def save_model_comparison_plot(metrics_df: pd.DataFrame) -> None:
 
 
 def main() -> None:
-    # Create output folders and load the processed project dataset.
     ensure_directories()
 
     # Training starts from the processed CSV, not the raw CSV, because
@@ -91,8 +84,6 @@ def main() -> None:
         y_validation,
     )
 
-    # Save the validation summary and full tuning history.
-    # This loop flattens all per-model trial records into one list for the CSV.
     trial_records = []
     for model_result in selected_models.values():
         for trial in model_result["validation_trials"]:
@@ -102,10 +93,8 @@ def main() -> None:
     metrics_df.to_csv(METRICS_TABLE_PATH, index=False)
     trial_df.to_csv(HYPERPARAMETER_TRIALS_PATH, index=False)
 
-    # The comparison plot is a visual summary of the validation table.
     save_model_comparison_plot(metrics_df)
 
-    # Pull out the winning model settings.
     best_model_result = selected_models[best_model_name]
     best_params = best_model_result["best_params"]
 
@@ -121,7 +110,6 @@ def main() -> None:
         y_train_validation,
     )
 
-    # Save the final package with the exact metadata used by the rest of the project.
     # Keeping metadata with the pipeline makes the demo and evaluation scripts
     # independent of hard-coded model details.
     final_model_package = {
@@ -138,7 +126,6 @@ def main() -> None:
     }
     joblib.dump(final_model_package, FINAL_MODEL_PATH)
 
-    # Print a short command-line summary.
     print(f"Validation metrics saved to: {METRICS_TABLE_PATH}")
     print(f"Hyperparameter trials saved to: {HYPERPARAMETER_TRIALS_PATH}")
     print(f"Model comparison plot saved to: {PLOTS_DIR / 'model_comparison.png'}")

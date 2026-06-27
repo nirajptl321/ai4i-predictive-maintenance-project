@@ -38,11 +38,8 @@ from src.config import (
 )
 
 
-# Filesystem helpers
 def ensure_directories() -> None:
     """Create output directories used by the project."""
-    # All scripts write into these folders. Creating them up front keeps the
-    # later save steps simple.
     output_directories = [
         PROCESSED_DATA_DIR,
         MODELS_DIR,
@@ -59,10 +56,8 @@ def ensure_directories() -> None:
         Path(path).mkdir(parents=True, exist_ok=True)
 
 
-# Column validation
 def validate_model_columns(df: pd.DataFrame) -> None:
     """Validate required columns and make leakage violations explicit."""
-    # The model should only use approved feature columns plus the target.
     required_columns = FEATURE_COLUMNS + [TARGET_COLUMN]
     missing_columns = []
 
@@ -81,18 +76,15 @@ def validate_model_columns(df: pd.DataFrame) -> None:
         raise ValueError(f"Leakage columns are configured as model features: {leaked_features}")
 
 
-# Feature/target splitting
 def split_features_target(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
     """Return the approved feature matrix and binary target vector."""
     validate_model_columns(df)
 
-    # X contains only the approved model inputs. y is the binary class label.
     feature_table = df[FEATURE_COLUMNS].copy()
     target_values = df[TARGET_COLUMN].astype(int).copy()
     return feature_table, target_values
 
 
-# Train/validation/test split
 def make_train_validation_test_split(
     df: pd.DataFrame,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, pd.Series]:
@@ -121,25 +113,19 @@ def make_train_validation_test_split(
     return X_train, X_validation, X_test, y_train, y_validation, y_test
 
 
-# Probability extraction
 def positive_class_probability(model, X: pd.DataFrame) -> np.ndarray:
     """Return the predicted probability for class 1, meaning machine failure."""
-    # scikit-learn returns one probability column per class. Column index 1 is
-    # the probability of the positive class: machine_failure = 1.
     class_probabilities = model.predict_proba(X)
     positive_probabilities = class_probabilities[:, 1]
     return positive_probabilities
 
 
-# Metrics
 def classification_metrics(
     y_true: pd.Series | np.ndarray,
     y_pred: np.ndarray,
     y_probability: np.ndarray,
 ) -> dict[str, float]:
     """Compute the project metrics for binary classification."""
-    # Keep metric names stable because result CSVs and report text refer to
-    # these exact names.
     metrics = {}
     metrics["accuracy"] = accuracy_score(y_true, y_pred)
 
@@ -157,7 +143,6 @@ def classification_metrics(
     return metrics
 
 
-# Confusion matrix
 def confusion_matrix_values(y_true: pd.Series | np.ndarray, y_pred: np.ndarray) -> dict[str, int]:
     """Return TN, FP, FN, TP values for the binary confusion matrix."""
     # labels=[0, 1] fixes the order so ravel() always returns TN, FP, FN, TP.
@@ -173,12 +158,10 @@ def confusion_matrix_values(y_true: pd.Series | np.ndarray, y_pred: np.ndarray) 
     return values
 
 
-# Metric text formatting
 def metrics_to_text(metrics: dict[str, float]) -> str:
     """Format metric values for terminal output."""
     lines = []
 
-    # Format each value to four decimals to match the report and console output.
     for name, value in metrics.items():
         lines.append(f"{name}: {value:.4f}")
 

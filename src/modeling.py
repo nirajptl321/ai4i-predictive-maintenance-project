@@ -7,7 +7,6 @@ hyperparameter trials on the validation set, and refits the selected model.
 
 from __future__ import annotations
 
-# Imports
 import json
 from collections import OrderedDict
 from dataclasses import dataclass
@@ -26,22 +25,15 @@ from src.config import NUMERIC_FEATURE_COLUMNS, RANDOM_STATE, TYPE_COLUMN
 from src.utils import classification_metrics, positive_class_probability
 
 
-# Model specification container
 @dataclass(frozen=True)
 class ModelSpec:
     """Keep one model, its display name, and its optional tuning grid together."""
 
-    # name is used in output CSVs and console messages.
     name: str
-
-    # estimator is an unfitted scikit-learn classifier.
     estimator: BaseEstimator
-
-    # param_grid is None for models that are not grid-tuned.
     param_grid: dict[str, list] | None = None
 
 
-# Preprocessing pipeline
 def make_preprocessor() -> ColumnTransformer:
     """Build the common preprocessing step for all models."""
     # Machine type is categorical, so it is converted into one-hot columns.
@@ -69,7 +61,6 @@ def make_preprocessor() -> ColumnTransformer:
 
 def make_pipeline(estimator: BaseEstimator) -> Pipeline:
     """Attach preprocessing to a classifier."""
-    # Every candidate model gets the same preprocessing for a fair comparison.
     # The pipeline also prevents data leakage because preprocessing is fit only
     # on the training data inside each trial.
     pipeline_steps = [
@@ -79,13 +70,10 @@ def make_pipeline(estimator: BaseEstimator) -> Pipeline:
     return Pipeline(steps=pipeline_steps)
 
 
-# Candidate model definitions
 def model_specs() -> OrderedDict[str, ModelSpec]:
     """Return exactly the five models required for the project."""
-    # OrderedDict keeps the model comparison order stable in output files.
     specs = OrderedDict()
 
-    # Logistic Regression is the simple linear baseline. It has no grid here.
     specs["Logistic Regression"] = ModelSpec(
         name="Logistic Regression",
         estimator=LogisticRegression(
@@ -96,8 +84,6 @@ def model_specs() -> OrderedDict[str, ModelSpec]:
         ),
     )
 
-    # Decision Tree is an interpretable nonlinear model. Its grid tests tree
-    # depth, split criterion, and leaf size.
     specs["Decision Tree"] = ModelSpec(
         name="Decision Tree",
         estimator=DecisionTreeClassifier(
@@ -111,8 +97,6 @@ def model_specs() -> OrderedDict[str, ModelSpec]:
         },
     )
 
-    # Random Forest is a bagged tree ensemble. Its grid tests forest size, tree
-    # depth, and leaf size.
     specs["Random Forest"] = ModelSpec(
         name="Random Forest",
         estimator=RandomForestClassifier(
@@ -127,8 +111,6 @@ def model_specs() -> OrderedDict[str, ModelSpec]:
         },
     )
 
-    # Extra Trees is another tree ensemble. It is kept with fixed settings for
-    # this project.
     specs["Extra Trees"] = ModelSpec(
         name="Extra Trees",
         estimator=ExtraTreesClassifier(
@@ -139,9 +121,6 @@ def model_specs() -> OrderedDict[str, ModelSpec]:
         ),
     )
 
-    # HistGradientBoostingClassifier is the boosting model that wins validation
-    # selection in this project. Its grid tests learning rate, iteration count,
-    # and maximum leaf nodes.
     specs["HistGradientBoostingClassifier"] = ModelSpec(
         name="HistGradientBoostingClassifier",
         estimator=HistGradientBoostingClassifier(random_state=RANDOM_STATE),
@@ -154,7 +133,6 @@ def model_specs() -> OrderedDict[str, ModelSpec]:
     return specs
 
 
-# Model comparison helper
 def _is_better(candidate: dict[str, float], incumbent: dict[str, float] | None) -> bool:
     """Return True when a trial beats the current best validation result."""
     if incumbent is None:
@@ -177,7 +155,6 @@ def _is_better(candidate: dict[str, float], incumbent: dict[str, float] | None) 
     return candidate_key > incumbent_key
 
 
-# Training and validation loop
 def train_and_validate_models(
     X_train: pd.DataFrame,
     y_train: pd.Series,
@@ -185,16 +162,10 @@ def train_and_validate_models(
     y_validation: pd.Series,
 ) -> tuple[pd.DataFrame, dict[str, dict], str]:
     """Tune required models on train/validation data and select by validation F1."""
-    # summary_records stores one best validation row per model family.
     summary_records = []
-
-    # selected_models stores the fitted best pipeline and all trial details for
-    # each model family.
     selected_models: dict[str, dict] = {}
 
     for spec in model_specs().values():
-        # ParameterGrid expands each model's grid into one trial per parameter combination.
-        # Models without a grid get one empty-parameter trial: {}.
         parameter_grid = list(ParameterGrid(spec.param_grid or {}))
         trial_records = []
         best_metrics: dict[str, float] | None = None
@@ -202,7 +173,6 @@ def train_and_validate_models(
         best_pipeline: Pipeline | None = None
 
         for trial_number, params in enumerate(parameter_grid, start=1):
-            # Clone the estimator so each trial starts from a fresh, unfitted model.
             estimator = clone(spec.estimator).set_params(**params)
             pipeline = make_pipeline(estimator)
 
@@ -228,7 +198,6 @@ def train_and_validate_models(
             trial_records.append(trial_record)
 
             if _is_better(metrics, best_metrics):
-                # Keep the best trial for this model family.
                 best_metrics = metrics
                 best_params = params
                 best_pipeline = pipeline
@@ -236,8 +205,6 @@ def train_and_validate_models(
         if best_metrics is None or best_params is None or best_pipeline is None:
             raise RuntimeError(f"No model candidate was trained for {spec.name}")
 
-        # This row goes into results/metrics_table.csv after all model families
-        # have been ranked.
         summary_record = {
             "model": spec.name,
             "split": "validation",
@@ -264,12 +231,10 @@ def train_and_validate_models(
     ).reset_index(drop=True)
     metrics_df.insert(0, "rank", range(1, len(metrics_df) + 1))
 
-    # The model ranked first by validation metrics is selected for final refit.
     best_model_name = metrics_df.loc[0, "model"]
     return metrics_df, selected_models, best_model_name
 
 
-# Final refit
 def fit_final_model(
     model_name: str,
     best_params: dict,
