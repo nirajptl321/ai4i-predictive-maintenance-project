@@ -1,0 +1,2 @@
+model,split,accuracy,precision,recall,f1_score,f2_score,roc_auc,true_negative,false_positive,false_negative,true_positive
+HistGradientBoostingClassifier,test,0.9853333333333333,0.8717948717948718,0.6666666666666666,0.7555555555555555,0.6995884773662552,0.9750199596746911,1444,5,17,34

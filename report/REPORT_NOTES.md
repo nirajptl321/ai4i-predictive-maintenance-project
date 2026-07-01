@@ -1,0 +1,24 @@
+# Report Notes
+
+- Main metric: F1-score.
+- Secondary metrics: recall and F2-score.
+- Final selected model: HistGradientBoostingClassifier.
+- Best parameters: `learning_rate=0.05`, `max_iter=100`, `max_leaf_nodes=31`.
+- Final test accuracy: 0.9853.
+- Final test precision: 0.8718.
+- Final test F1-score: 0.7556.
+- Final test recall: 0.6667.
+- Final test F2-score: 0.6996.
+- Final test ROC-AUC: 0.9750.
+- Final test confusion matrix: TN=1444, FP=5, FN=17, TP=34.
+- Diagnostic failure mode columns are discussed only as labels for EDA and are excluded from modeling.
+- Official guideline PDF copied to `docs/COEN330_Project_Guidelines.pdf`.
+- Tuned models: Decision Tree, Random Forest, HistGradientBoostingClassifier.
+- Full tuning history: `results/hyperparameter_trials.csv` with 36 validation trials.
+- Best validation result per model: `results/metrics_table.csv`.
+- Five compared models: Logistic Regression baseline, Decision Tree, Random Forest, Extra Trees, HistGradientBoostingClassifier.
+- Clean regenerated figures are in `results/plots/`.
+- Final PDF report: `report/final_report.pdf`.
+- Final Word report: `report/final_report.docx`.
+- Team contribution names and wording are filled in for Niraj Patel, Samuel Lavallée, Thinoushan Senathirajah, Omar Shrit, and Arnav Singh.
+- Final PDF/DOCX exports are ready; regenerate them only after future source changes.

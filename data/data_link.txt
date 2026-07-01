@@ -1,0 +1,13 @@
+Dataset: AI4I 2020 Predictive Maintenance Dataset
+Source: UCI Machine Learning Repository
+URL: https://archive.ics.uci.edu/dataset/601/ai4i+2020+predictive+maintenance+dataset
+License: CC BY 4.0, as distributed through the UCI Machine Learning Repository
+Dataset attribution: Stephan Matzka, AI4I 2020 Predictive Maintenance Dataset
+Related paper: Stephan Matzka, "Explainable Artificial Intelligence for Predictive Maintenance Applications," 2020
+
+Expected local file:
+data/raw/ai4i2020.csv
+
+Notes:
+- This repository keeps the small raw CSV in data/raw for reproducibility.
+- The processed dataset is created by running: python -m src.preprocessing
